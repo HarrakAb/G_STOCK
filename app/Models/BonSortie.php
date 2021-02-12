@@ -12,18 +12,9 @@ class BonSortie extends Model
 
     use SoftDeletes;
 
-    protected $fillable = [
-        'bon_number',
-        'bon_date',
-        'article',
-        'categorie_id',
-        'quantite',
-        'prix_unitaire',
-        'prix_total',
-        'created_by'
-    ];
+   protected $guarded = [];
 
-    public function categorie(){
-        return $this->belongsTo('App\Models\Categorie');
+    public function bons(){
+        return $this->hasMany(SortieDetail::class,'bon_sorties_id' , 'id');
     }
 }

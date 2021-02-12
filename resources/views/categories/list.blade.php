@@ -12,7 +12,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Categories</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les Categories</span>
+							<h4 class="content-title mb-0 my-auto">الأقسام</h4><!-- <span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les Categories</span> -->
 						</div>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
-                                        <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">Ajouter une Categorie </a>
+                                        <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">إظافة قسم</a>
                                     </div>
 								</div>
 							</div>
@@ -51,8 +51,8 @@
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>Nom de Categorie</th>
-												<th>Descritpion</th>
+												<th>القسم</th>
+												<th>الوصف</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -87,18 +87,18 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content modal-content-demo">
                             <div class="modal-header">
-                                <h6 class="modal-title">Crée une Categorie</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                <h6 class="modal-title">قسم جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 							</div>
                             <div class="modal-body">
                                 <form action="{{route('categories.store')}}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Nom de Categorie</label>
+                                        <label>إسم القسم</label>
                                          <input name="categorie_name" class="form-control" type="text">
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn ripple btn-primary" type="submit">Enregistrer</button>
-                                        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Fermer</button>
+                                        <button class="btn ripple btn-primary" type="submit">حفظ</button>
+                                        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">رجوع</button>
                                     </div>
                                 </form>
                             </div>
@@ -112,7 +112,7 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Modifier Categorie</h5>
+								<h5 class="modal-title" id="exampleModalLabel">تعديل قسم</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -124,13 +124,13 @@
 									@csrf
 									<div class="form-group">
 										<input type="hidden" name="id" id="id" value="">
-										<label for="recipient-name" class="col-form-label">Nom de Categorie</label>
+										<label for="recipient-name" class="col-form-label">إسم القسم</label>
 										<input class="form-control" name="categorie_name" id="categorie_name" type="text">
 									</div>
 									</div>
 									<div class="modal-footer">
-										<button type="submit" class="btn btn-primary">Modifier</button>
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+										<button type="submit" class="btn btn-primary">تعديل</button>
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">رجوع</button>
 									</div>
 							</form>
 						</div>
@@ -142,20 +142,20 @@
 					<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content modal-content-demo">
 							<div class="modal-header">
-								<h6 class="modal-title">Supprimer Categorie</h6><button aria-label="Close" class="close" data-dismiss="modal"
+								<h6 class="modal-title">حذف قسم</h6><button aria-label="Close" class="close" data-dismiss="modal"
 									type="button"><span aria-hidden="true">&times;</span></button>
 							</div>
 							<form action="categories/destroy" method="post">
 								{{method_field('delete')}}
 								{{csrf_field()}}
 								<div class="modal-body">
-									<p>Are you sure ?</p><br>
+									<p>هل أنت متأكد ؟</p><br>
 									<input type="hidden" name="id" id="id" value="">
 									<input class="form-control" name="categorie_name" id="categorie_name" type="text" readonly>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-danger">Confirmer</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">رجوع</button>
+									<button type="submit" class="btn btn-danger">تأكيد</button>
 								</div>
 						</div>
 						</form>

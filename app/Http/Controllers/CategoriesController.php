@@ -52,7 +52,7 @@ class CategoriesController extends Controller
         $categorie->categorie_name = $request->input('categorie_name');
         $categorie->created_By = Auth::user()->name;
         $categorie->save();
-        session()->flash('success', 'catégorie crée avec succès');
+        session()->flash('success', 'تم الحفظ بنجاح');
         return redirect('/categories');
     }
 
@@ -93,15 +93,10 @@ class CategoriesController extends Controller
         ]);
 
         $categorie = Categorie::find($id);
-        // $sections->update([
-        //     'section_name' => $request->section_name,
-        //     'description' => $request->description,
-        // ]);
-
         $categorie->categorie_name = $request->input('categorie_name');
         $categorie->save();
 
-        session()->flash('success','catégorie modifié avec succès');
+        session()->flash('success','تم التعديل بنجاح');
         return redirect('/categories');
 
     }
@@ -117,7 +112,7 @@ class CategoriesController extends Controller
         $id = $request->id;
         $categorie = Categorie::find($id);
         $categorie->delete();
-        session()->flash('success', 'catégorie supprimé avec succès');
+        session()->flash('success', 'تمت عملية الحذف بنجاح');
         return redirect('/categories');
     }
 }

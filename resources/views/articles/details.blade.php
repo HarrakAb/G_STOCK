@@ -13,7 +13,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">STOCK</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/Article</span>
+							<h4 class="content-title mb-0 my-auto">المخزن</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/المنتوجات</span>
 						</div>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
-                                        <h4 class="text-primary">L'état de Stock</h4>
+                                        <h4 class="text-primary">حالة المخزن</h4>
                                     </div>
 								</div>
 							</div>
@@ -51,11 +51,11 @@
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>Reference</th>
-                                                <th>Categorie</th>
-                                                <th>Entrée</th>
-												<th>Sortie</th>
-												<th>Stock</th>
+												<th>المنتوج</th>
+                                                <th>القسم</th>
+                                                <th>الوارد</th>
+												<th>الصادر</th>
+												<th>المتوفر</th>
 											</tr>
 										</thead>
 										<tbody>	

@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\BonEntree;
 use App\Models\BonSortie;
 use App\Models\Categorie;
+use App\Models\EntreeDetail;
+use App\Models\SortieDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
@@ -17,7 +19,7 @@ class ArticlesController extends Controller
 
     // function __construct()
     // {
-    //     //$this->middleware('permission:view role', ['only' => ['index', 'store']]);
+    //     $this->middleware('permission:view role', ['only' => ['index', 'store']]);
     //     $this->middleware('permission:add article', ['only' => ['create', 'store']]);
     //     $this->middleware('permission:edit article', ['only' => ['edit', 'update']]);
     //     $this->middleware('permission:delete article', ['only' => ['destroy']]);
@@ -63,7 +65,7 @@ class ArticlesController extends Controller
         $article->description = $request->input('description');
         $article->categorie_id = $request->input('categorie_id');
         $article->save();
-        session()->flash('success', 'Article crée avec succés');
+        session()->flash('success', 'تم الحفظ بنجاح');
         return redirect('/articles');
     }
 
@@ -112,7 +114,7 @@ class ArticlesController extends Controller
         $article->categorie_id = $id;
         $article->description = $request->input('description');
         $article->save();
-        session()->flash('success', 'Article modifié avec succés');
+        session()->flash('success', 'تم التعديل بنجاح');
         return redirect('/articles');
 
     }
@@ -127,16 +129,16 @@ class ArticlesController extends Controller
     {
         $article = Article::findOrFail($request->article_id);
         $article->delete();
-        session()->flash('success', 'Article supprimé avec succés');
+        session()->flash('success', 'تمت عملية الحذف بنجاح');
         return redirect('/articles');
     }
 
 
     public function detail($reference)
     {
-        $entrees = BonEntree::where('article',$reference)->sum('quantite');
+        $entrees = EntreeDetail::where('article',$reference)->sum('quantite');
         $article = Article::where('reference',$reference)->first();
-        $sorties  = BonSortie::where('article',$reference)->sum('quantite');
+        $sorties  = SortieDetail::where('article',$reference)->sum('quantite');
        // $attachments  = Invoices_Attachment::where('invoice_id',$id)->get();
 
         return view('articles.details',compact('entrees','sorties','article'));

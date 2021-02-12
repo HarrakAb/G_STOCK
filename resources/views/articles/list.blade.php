@@ -13,7 +13,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">Categories</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les articles</span>
+							<h4 class="content-title mb-0 my-auto">المنتوجات</h4><!-- <span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les articles</span> -->
 						</div>
 					</div>
 				</div>
@@ -41,7 +41,7 @@
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
-                                        <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">Ajouter un Article </a>
+                                        <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-scale" data-toggle="modal" href="#modaldemo8">إظافة منتوج</a>
                                     </div>
 								</div>
 							</div>
@@ -51,11 +51,11 @@
 										<thead>
 											<tr>
 												<th>#</th>
-												<th>Reference</th>
-                                                <th>Descritpion</th>
-                                                <th>Categorie</th>
-                                                <th>Détails</th>
-												<th>Opération</th>
+												<th>رمز المنتوج</th>
+                                                <th>الوصف</th>
+                                                <th>القسم</th>
+                                                <th>التفاصيل</th>
+												<th>العمليات</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -100,30 +100,30 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content modal-content-demo">
                             <div class="modal-header">
-                                <h6 class="modal-title">Crée un Article</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                <h6 class="modal-title">منتوج جديد</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
 							</div>
                             <div class="modal-body">
                                 <form action="{{route('articles.store')}}" method="post">
                                     @csrf
                                     <div class="form-group">
-                                        <label>Reference</label>
+                                        <label>رمز المنتوج</label>
                                          <input name="reference" class="form-control" type="text">
 									</div>
 									<div class="form-group">
                                          <select name="categorie_id" id="categorie_id" class="form-control" type="text" required>
-											<option value="" selected disabled>Choisir Categorie</option>
+											<option value="" selected disabled>القسم</option>
 											 @foreach ($categories as $categorie)
 										 		<option value="{{ $categorie->id }}">{{ $categorie->categorie_name }}</option>
 											 @endforeach
 										 </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>Designation</label> 
+                                        <label>الوصف</label> 
                                         <textarea name="description" class="form-control" type="textarea"></textarea>
                                     </div>
                                     <div class="modal-footer">
-                                        <button class="btn ripple btn-primary btn ripple btn-success-gradient" id='swal-success' type="submit">Enregistrer</button>
-                                        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">Fermer</button>
+                                        <button class="btn ripple btn-primary btn ripple btn-success-gradient" id='swal-success' type="submit">حفظ</button>
+                                        <button class="btn ripple btn-secondary" data-dismiss="modal" type="button">رجوع</button>
                                     </div>
                                 </form>
                             </div>
@@ -137,7 +137,7 @@
 					<div class="modal-dialog" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalLabel">Modifier Article</h5>
+								<h5 class="modal-title" id="exampleModalLabel">تعديل منتوج</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -149,23 +149,23 @@
 									@csrf
 									<div class="form-group">
 										<input type="hidden" name="article_id" id="article_id" value="">
-										<label for="recipient-name" class="col-form-label">Reference</label>
+										<label for="recipient-name" class="col-form-label">رمز المنتوج</label>
 										<input class="form-control" name="reference" id="reference" type="text">
 									</div>
-									<label class="my-1 mr-2" for="inlineFormCustomSelectPref">Categories</label>
+									<label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
 									<select name="categorie_name" id="categorie_name" class="custom-select my-1 mr-sm-2" required>
 										@foreach ($categories as $categorie)
 											<option>{{ $categorie->categorie_name }}</option>
 										@endforeach
 									</select>
 									<div class="form-group">
-										<label for="message-text" class="col-form-label">Description</label>
+										<label for="message-text" class="col-form-label">الوصف</label>
 										<textarea class="form-control" id="description" name="description"></textarea>
 									</div>
 									</div>
 									<div class="modal-footer">
-										<button type="submit" class="btn btn-primary">Modifier</button>
-										<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+										<button type="submit" class="btn btn-primary">تعديل</button>
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">رجوع</button>
 									</div>
 							</form>
 						</div>
@@ -177,20 +177,20 @@
 					<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content modal-content-demo">
 							<div class="modal-header">
-								<h6 class="modal-title">Supprimer Categorie</h6><button aria-label="Close" class="close" data-dismiss="modal"
-																			   type="button"><span aria-hidden="true">&times;</span></button>
+								<h6 class="modal-title">حذف منتوج</h6><button aria-label="Close" class="close" data-dismiss="modal"
+										type="button"><span aria-hidden="true">&times;</span></button>
 							</div>
 							<form action="articles/destroy" method="post">
 								{{method_field('delete')}}
 								{{csrf_field()}}
 								<div class="modal-body">
-									<p>Vous étes sure ?</p><br>
+									<p>هل أنت متأكد ؟</p><br>
 									<input type="hidden" name="article_id" id="article_id" value="">
 									<input class="form-control" name="reference" id="reference" type="text" readonly>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-									<button type="submit" class="btn btn-danger">Confirmer</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">رجوع</button>
+									<button type="submit" class="btn btn-danger">تأكيد</button>
 								</div>
 						</div>
 						</form>

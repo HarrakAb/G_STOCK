@@ -11,19 +11,13 @@ class BonEntree extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = [
-        'bon_number',
-        'bon_date',
-        'article',
-        'categorie_id',
-        'quantite',
-        'prix_unitaire',
-        'prix_total',
-        'created_by',
-        'received_by'
-    ];
+    protected $guarded = [];
 
     public function categorie(){
         return $this->belongsTo('App\Models\Categorie');
+    }
+
+    public function bons(){
+        return $this->hasMany(EntreeDetail::class,'bon_entrees_id' , 'id');
     }
 }

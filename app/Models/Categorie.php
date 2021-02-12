@@ -20,4 +20,8 @@ class Categorie extends Model
     public function bonEntree(){
         return $this->hasMany('App\Models\BonEntree');
     }
+
+    public function article(){
+        return $this->hasMany('App\Models\Article');
+    }
 }

@@ -15,8 +15,7 @@
     <div class="breadcrumb-header justify-content-between">
         <div class="my-auto">
             <div class="d-flex">
-                <h4 class="content-title mb-0 my-auto">Bon d'Entrees</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Tous les
-                    Bon d'Entrees</span>
+                <h4 class="content-title mb-0 my-auto">فواتير الإستراد</h4><!-- <span class="text-muted mt-1 tx-13 mr-2 mb-0">/ Tous lesBon de Sortie</span> -->
             </div>
         </div>
 
@@ -38,7 +37,7 @@
                     }
                 </script>
             @endif
-            @if (session()->has('paiment'))
+            @if (session()->has('Add'))
                 <script>
                     window.onload = function(){
                         notif({
@@ -48,16 +47,26 @@
                     }
                 </script>
             @endif
+            @if (session()->has('stock'))
+                <script>
+                    window.onload = function(){
+                        notif({
+                            msg : "Verfifié Votre Srock !!",
+                            type : "success"
+                        })
+                    }
+                </script>
+            @endif
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    {{-- @can('ajouter bon') --}}
+                    {{-- @can('add invoice') --}}
                     <a href="{{route('bonEntrees.create')}}" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
-                            class="fas fa-plus"></i>&nbsp; Ajouter un Bon </a>
+                            class="fas fa-plus"></i>&nbsp; إظافة فاتورة</a>
                     {{-- @endcan --}}
                     {{-- @can('export EXCEL') --}}
                     {{-- <a href="export_invoices" class="modal-effect btn btn-sm btn-success" style="color:white"><i
-                        class="fas fa-file-download"></i>&nbsp; Export Excel
-                     </a> --}}
+                        class="fas fa-file-download"></i>&nbsp; Export Excel 
+                    </a> --}}
                     {{-- @endcan --}}
                 </div>
                 <div class="card-body">
@@ -66,20 +75,17 @@
                             <thead>
                                 <tr>
                                     <th class="border-bottom-0">#</th>
-                                    <th class="border-bottom-0">Numéro du Bon</th>
-                                    <th class="border-bottom-0">Date d'Entrée</th>
-                                    <th class="border-bottom-0">Article</th>
-                                    <th class="border-bottom-0">Categorie</th>
-                                    <th class="border-bottom-0">Quantité</th>
-                                    <th class="border-bottom-0">Prix Unitaire</th>
-                                    <th class="border-bottom-0">Prix Total</th>
-                                    <th class="border-bottom-0">Receptionné Par</th>
-                                    <th class="border-bottom-0">Action</th>
+                                    <th class="border-bottom-0">رقم الفاتورة</th>
+                                    <th class="border-bottom-0">تاريخ الفاتورة</th>
+                                    <th class="border-bottom-0">إسم الزبون</th>
+                                    <th class="border-bottom-0">المبلغ الإجمالي للفاتورة</th>
+                                    <th class="border-bottom-0">التفاصيل</th>
+                                    <th class="border-bottom-0">العمليات</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @if (empty($bonEntrees))
-                                <th class="border-bottom-0 text-bold"> Aucun bon n'est trouvé !!</th>
+                                <th class="border-bottom-0 text-bold"> لا توجد فاتير !!</th>
                             @else
                                 @php
                                 $i = 0 ;
@@ -89,44 +95,40 @@
                                     $i++;
                                     @endphp
                                     <tr class="text-center">
-                                        <td>{{ $bonEntree->id }}</td>
+                                        <td>{{ $bonEntree->i }}</td>
                                         <td>{{$bonEntree->bon_number}}</td>
                                         <td>{{$bonEntree->bon_date}}</td>
-                                        <td>{{$bonEntree->article}}</td>
-										{{-- <td><a
-											href="{{ url('details') }}/{{ $invoice->id }}">{{ $invoice->categorie->categorie_name }}</a>
-										</td> --}}
-                                        <td>{{$bonEntree->categorie->categorie_name}}</td>
-                                        <td>{{$bonEntree->quantite}}</td>
-                                        <td>{{$bonEntree->prix_unitaire}}</td>
-                                        <td>{{$bonEntree->prix_total}}</td>
-                                        <td>{{$bonEntree->received_by}}</td>
+                                        <td>{{$bonEntree->client_name}}</td>
+                                        <td>{{$bonEntree->total}}</td>
+										<td><a
+                                            href="{{ route('bonEntrees.show' , $bonEntree->id ) }}"><i class="fas fa-eye mr-3"></i></a>
+                                        </td>
                                         <td>	
 											<div class="dropdown">
 												<button aria-expanded="false" aria-haspopup="true" class="btn btn-sm btn-primary"
-												data-toggle="dropdown" id="dropdownMenuButton" type="button">Menu<i class="fas fa-caret-down ml-1"></i></button>
+												data-toggle="dropdown" id="dropdownMenuButton" type="button">قائمة<i class="fas fa-caret-down ml-1"></i></button>
 												<div  class="dropdown-menu tx-md-10">
                                                     {{-- @can('modifie bon') --}}
 													<a class="dropdown-item text-success btn-sm" 
-                                                        href="{{route('bonEntrees.edit',$bonEntree->id)}}">Modifier</a>
+                                                        href="{{route('bonEntrees.edit',$bonEntree->id)}}">تعديل</a>
                                                     {{-- @endcan --}}
                                                     {{-- @can('supprime bon') --}}
                                                     <a class="dropdown-item text-info btn-sm"
                                                         data-bon_id="{{$bonEntree->id}}"
                                                         data-toggle="modal"
                                                         data-target="#archive_bon"
-                                                        href="#">Archive</a>
+                                                        href="#">أرشفة</a>
                                                     {{-- @endcan --}}
                                                     {{-- @can('archive bon') --}}
                                                     <a class="dropdown-item text-danger btn-sm"
                                                         data-bon_id="{{ $bonEntree->id }}"
                                                         data-toggle="modal"
                                                         data-target="#delete_bon"
-                                                        href="#">Delete</a>
+                                                        href="#">حذف</a>
                                                     {{-- @endcan --}}
                                                     {{-- @can('print bon') --}}
                                                     <a class="dropdown-item text-primary btn-sm" 
-                                                        href="{{route('print',$bonEntree->id)}}">Print</a>
+                                                        href="{{route('print',$bonEntree->id)}}">طباعة</a>
                                                     {{-- @endcan --}}
 												</div>
 											</div>
@@ -148,17 +150,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">حذف المرفق</h5>
+                <h5 class="modal-title" id="exampleModalLabel">حذف الفاتورة</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('bonEntrees.destroy',"test")}}" method="post">
+            <form action="{{route('bonSorties.destroy',"test")}}" method="post">
                 @method('DELETE')
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <p class="text-center">
-                    <h6 style="color:red"> هل انت متاكد من عملية حذف المرفق ؟</h6>
+                    <h6 style="color:red"> هل انت متاكد من عملية حذف الفاتورة ؟</h6>
                     </p>
                     
                     <input type="text" name="bon_id" id="bon_id" value="">
@@ -178,17 +180,17 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">حذف المرفق</h5>
+                <h5 class="modal-title" id="exampleModalLabel">أرشفة الفاتورة</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('bonEntrees.destroy',"test")}}" method="post">
+            <form action="{{route('bonSorties.destroy',"test")}}" method="post">
                 @method('DELETE')
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <p class="text-center">
-                    <h6 style="color:red"> هل انت متاكد من عملية حذف المرفق ؟</h6>
+                    <h6 style="color:red">هل انت متاكد من عملية أرشفة الفاتورة ؟</h6>
                     </p>
                     <input type="text" name="page_id" id="page_id" value="2">
                     <input type="text" name="bon_id" id="bon_id" value="">

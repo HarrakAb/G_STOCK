@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Bons;
 use App\Models\BonSortie;
 use App\Models\Categorie;
 use App\Models\User;
@@ -21,7 +22,7 @@ class BonSortieController extends Controller
      */
     public function index()
     {
-        $bonSorties = BonSortie::all();
+        $bonSorties = BonSortie::orderBy('id' , 'desc')->paginate(5);
         return view('bonSorties.listBon',compact('bonSorties'));
     }
 
@@ -32,8 +33,8 @@ class BonSortieController extends Controller
      */
     public function create()
     {
-        $categories = Categorie::all();
-        return view('bonSorties.creeBon',compact('categories'));
+        $articles = Article::all();
+        return view('bonSorties.creeBon',compact('articles'));
     }
 
     /**
@@ -45,44 +46,52 @@ class BonSortieController extends Controller
     public function store(Request $request)
     {
 
-        // $article= Article::where('reference', $request->article)->first();
-        // dd($article);
-        BonSortie::create([
-            'bon_number' => $request->bon_number,
-            'bon_date' => $request->bon_date,
-            'article' => $request->article,
-            'categorie_id' => $request->categorie,
-            'quantite' => $request->quantite,
-            'prix_unitaire' => $request->prix_unitaire,
-            'prix_total' => $request->prix_total,
-            'created_by' => $request->created_by = Auth::user()->name,
-        ]);
+        $data['bon_number'] = $request->bon_number;
+        $data['bon_date'] = $request->bon_date;
+        $data['client_name'] = $request->client_name;
+        $data['client_address'] = $request->client_address;
+        $data['client_phone'] = $request->client_phone;
+        $data['total'] = $request->total;
+        $data['created_by'] = Auth::user()->name;
 
-        
+
+        $bonSortie = BonSortie::create($data);
+
+        $details_list = [];
+        for ($i = 0; $i < count($request->article); $i++) {
+            $details_list[$i]['article'] = $request->article[$i];
+            $details_list[$i]['quantite'] = $request->quantite[$i];
+            $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
+            $details_list[$i]['prix_total'] = $request->prix_total[$i];
+        }
+
+        $details = $bonSortie->bons()->createMany($details_list);
+
         $stock = DB::table('articles')->select('stock')->where('reference', $request->article)->value('stock');
-        $stock1 = $stock - $request->quantite;
+        $stock1 = $stock - array_sum($request->quantite);
         DB::table('articles')->where('reference', $request->article)->update(['stock' => $stock1]);
         
 
         
         $user = User::get();
-        //$user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->id);
         $article= Article::where('reference', $request->article)->first();
+
         if($stock1 < 10 ){
-            Notification::send($user ,new CheckStock($article));
-            session()->flash('stock', 'verifié votre stock !');
+           Notification::send($user ,new CheckStock($article));
+           session()->flash('stock', 'verifié votre stock !');
         }
 
         //dd($article->reference);
 
-        //if( $stock < 10 ) {
+        if( $stock < 10 ) {
 
-            //$user = User::get();
-            //Notification::send(new CheckStock($article));
-           // session()->flash('stock', 'Veuillez Verifié Votre Stock !!');
-        //}
+            $user = User::get();
+            Notification::send(new CheckStock($article));
+           session()->flash('stock', 'المرجو التأكد من المخزن !!');
+        }
         
-        session()->flash('Add', 'Bon crée avec succés');
+        session()->flash('Add', 'تم الحفظ بنجاح');
         return redirect()->route('bonSorties.index');
     }
 
@@ -92,9 +101,10 @@ class BonSortieController extends Controller
      * @param  \App\Models\BonSortie  $bonSortie
      * @return \Illuminate\Http\Response
      */
-    public function show(BonSortie $bonSortie)
+    public function show(BonSortie $bonSortie , $id)
     {
-        //
+        $bonSorties = BonSortie::findOrFail($id);
+        return view('bonSorties.show' , compact('bonSorties'));
     }
 
     /**
@@ -106,8 +116,8 @@ class BonSortieController extends Controller
     public function edit($id)
     {
         $bonSorties = BonSortie::where('id', $id)->first();
-        $categories = Categorie::all();
-        return view('bonSorties.editBon', compact('bonSorties','categories'));
+        $articles = Article::all();
+        return view('bonSorties.editBon', compact('bonSorties','articles'));
     }
 
     /**
@@ -117,22 +127,44 @@ class BonSortieController extends Controller
      * @param  \App\Models\BonSortie  $bonSortie
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BonSortie $bonSortie)
+    public function update(Request $request, $id)
     {
-        //dd($request->bonSortie_id);
-        $bonSortie = BonSortie::findOrFail($request->bonSortie_id);
-        $bonSortie->update([
-            'bon_number' => $request->bon_number,
-            'bon_date' => $request->bon_date,
-            'article' => $request->article,
-            'categorie_id' => $request->categorie,
-            'quantite' => $request->quantite,
-            'prix_unitaire' => $request->prix_unitaire,
-            'prix_total' => $request->prix_total,
-            'created_by' => $request->created_by = Auth::user()->name,
-        ]);
+        //dd($request);
+        //return $request->all();
+        $bonSortie = BonSortie::whereId($id)->first();
 
-        session()->flash('edit', 'Bon modifier avec success');
+        $data['bon_number'] = $request->bon_number;
+        $data['bon_date'] = $request->bon_date;
+        $data['client_name'] = $request->client_name;
+        $data['client_address'] = $request->client_address;
+        $data['client_phone'] = $request->client_phone;
+        $data['total'] = $request->total;
+        $data['created_by'] = Auth::user()->name;
+
+        $bonSortie->update($data);
+        $bonSortie->bons()->delete();
+
+        //dump(count($request->article));
+        $details_list = [];
+
+            
+            for ($i = 0; $i < count(array($request->article)); $i++) {
+                $details_list[$i]['article'] = $request->article[$i];
+                $details_list[$i]['quantite'] = $request->quantite[$i];
+                $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
+                $details_list[$i]['prix_total'] = $request->prix_total[$i];
+            }
+      
+
+       // (is_countable($admin)?$admin:[])
+        $details = $bonSortie->bons()->createMany($details_list);
+
+        $stock = DB::table('articles')->select('stock')->where('reference', $request->article)->value('stock');
+        $stock1 = $stock - array_sum($request->quantite);
+        DB::table('articles')->where('reference', $request->article)->update(['stock' => $stock1]);
+        //dump( array_sum($request->quantite));
+
+        session()->flash('edit', 'تم التعديل بنجاح');
         return redirect()->route('bonSorties.index');
     }
 
@@ -150,13 +182,13 @@ class BonSortieController extends Controller
         if(!$page_id == 2){
         
             $bonEntree->forceDelete();
-            session()->flash('success', 'suppression effectuée');
-            return redirect()->route('bonEntrees.index');
+            session()->flash('success', 'تمت عملية الحذف بنجاح');
+            return redirect()->route('bonSorties.index');
 
         }else {
             $bonEntree->delete();
-            session()->flash('success', 'archivage effectuée');
-            return redirect()->route('bonEntrees.index');
+            session()->flash('success', 'تمت عملية الأرشفة بنجاح');
+            return redirect()->route('bonSorties.index');
         } 
     }
 
@@ -164,7 +196,7 @@ class BonSortieController extends Controller
 
     public function print($id){
         $bonSorties = BonSortie::where('id',$id)->first();
-        return view('bonSorties.print',compact('bonSorties'));
+        return view('bonSorties.show',compact('bonSorties'));
     }
 
 

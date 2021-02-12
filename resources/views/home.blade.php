@@ -12,27 +12,28 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="left-content">
 						<div>
-						  <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">BIENVENUE !</h2>
-						  <p class="mg-b-0">STOCK SYSTEM MANAGEMENT</p>
+						  <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">مرحباً</h2>
+						  <p class="mg-b-0">نظام تسيير المخزن</p>
 						</div>
 					</div>
 					<div class="main-dashboard-header-right">
 						<div>
-							<label class="tx-13">Les Ventes</label>
+							<label class="tx-13">المبيعات</label>
 							<div class="main-star">
 								<i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star"></i> <span>(14,873)</span>
 							</div>
 						</div>
 						<div>
-							<label class="tx-13">Les Ventes Mensuelles</label>
+							<label class="tx-13">المبيعات شهريا</label>
 							<h5>563,275</h5>
 						</div>
 						<div>
-							<label class="tx-13">Les Ventes Annuelles</label>
+							<label class="tx-13">المبيعات سنويا</label>
 							<h5>7830,675</h5>
 						</div>
 					</div>
 				</div>
+				
 				<!-- /breadcrumb -->
 @endsection
 @section('content')
@@ -50,7 +51,7 @@
 
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">TOUS LES BONS</h6>
+									<h6 class="mb-3 tx-12 text-white">جميع الفواتير</h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
@@ -71,7 +72,7 @@
 						<div class="card overflow-hidden sales-card bg-danger-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">BONS DE SORTIE</h6>
+									<h6 class="mb-3 tx-12 text-white">مجموع الصادرات</h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
@@ -92,7 +93,7 @@
 						<div class="card overflow-hidden sales-card bg-success-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">BONS D'ENTREE</h6>
+									<h6 class="mb-3 tx-12 text-white">مجموع الواردات</h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
@@ -113,7 +114,7 @@
 						<div class="card overflow-hidden sales-card bg-warning-gradient">
 							<div class="pl-3 pt-3 pr-3 pb-2 pt-0">
 								<div class="">
-									<h6 class="mb-3 tx-12 text-white">LES FACTURES</h6>
+									<h6 class="mb-3 tx-12 text-white">الدخل السنوي</h6>
 								</div>
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
@@ -135,24 +136,77 @@
 				<!-- row closed -->
 
 				<!-- row opened -->
-				<div class="row row-sm">
+				{{-- <div style="height: 50% !important;" class="row row-sm">
+					<div class="container">
+						<div class="carousel slide" id="main-carousel" data-ride="carousel" data-interval="2500">
+							<ol class="carousel-indicators">
+								<li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+								<li data-target="#main-carousel" data-slide-to="1"></li>
+								<li data-target="#main-carousel" data-slide-to="2"></li>
+								<li data-target="#main-carousel" data-slide-to="3"></li>
+							</ol><!-- /.carousel-indicators -->
+							
+							<div class="carousel-inner">
+								<div class="carousel-item active">
+									<img class="d-block img-fluid" src="https://s19.postimg.cc/qzj5uncgj/slide1.jpg" alt="">
+									<div class="carousel-caption d-none d-md-block">
+										<h1>Mountain</h1>
+									</div>
+								</div>
+								<div class="carousel-item">
+									<img class="d-block img-fluid" src="https://s19.postimg.cc/lmubh3h0j/slide2.jpg" alt="">
+									<div class="carousel-caption d-none d-md-block">
+										<h3>Mountain</h3>
+										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
+									</div>
+								</div>
+								<div class="carousel-item">
+									<img class="d-block img-fluid" src="https://s19.postimg.cc/99hh9lr5v/slide3.jpg" alt="">
+									<div class="carousel-caption d-none d-md-block">
+										<h3>Mountain</h3>
+										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
+									</div>
+								</div>
+								<div class="carousel-item">
+									<img src="https://s19.postimg.cc/nenabzsnn/slide4.jpg" alt="" class="d-block img-fluid">
+									<div class="carousel-caption d-none d-md-block">
+										<h3>Mountain</h3>
+										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
+									</div>
+								</div>
+							</div><!-- /.carousel-inner -->
+							
+							<a href="#main-carousel" class="carousel-control-prev" data-slide="prev">
+								<span class="carousel-control-prev-icon"></span>
+								<span class="sr-only" aria-hidden="true">Prev</span>
+							</a>
+							<a href="#main-carousel" class="carousel-control-next" data-slide="next">
+								<span class="carousel-control-next-icon"></span>
+								<span class="sr-only" aria-hidden="true">Next</span>
+							</a>
+						</div><!-- /.carousel -->
+					</div>
+					<!-- /.container -->
+				</div> --}}
+				 {{-- <div class="row row-sm">
 					<div class="col-md-12 col-lg-12 col-xl-7">
 						<div class="card">
 							<div class="card-header bg-transparent pd-b-0 pd-t-20 bd-b-0">
 								<div class="d-flex justify-content-between">
-									<h4 class="card-title mb-0">L'état de Mouvements du Bons</h4>
+									<h4 class="card-title mb-0">إحصائية الفواتير بالنسبة المؤية</h4>
 									<i class="mdi mdi-dots-horizontal text-gray"></i>
 								</div>
 								<p class="tx-12 text-muted mb-0"></p>
 							</div>
 							<div class="card-body" style="width: 75%;">
-								{{-- {!! $chartjs->render() !!} --}}
-							</div>
+								
+							</div> 
+							
 						</div>
 						
 					</div>
 					
-					{{-- <div class="col-lg-12 col-xl-5">
+					<div class="col-lg-12 col-xl-5">
 						<div class="card card-dashboard-map-one">
 							<label class="main-content-label">Sales Revenue by Customers in USA</label>
 							<span class="d-block mg-b-20 text-muted tx-12">Sales Performance of all states in the United States</span>
@@ -160,8 +214,8 @@
 								<div class="vmap-wrapper ht-180" id="vmap2"></div>
 							</div>
 						</div>
-					</div> --}}
-				</div>
+					</div>
+				</div>  --}}
 				<!-- row closed -->
 			</div>
 		</div>

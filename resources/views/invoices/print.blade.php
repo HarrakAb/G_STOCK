@@ -42,7 +42,7 @@
                         </div><!-- invoice-header -->
                         <div class="row mg-t-20">
                             <div class="col-md">
-                                <label class="tx-gray-600">Billed To</label>
+                                <label class="tx-gray-600">إلى :</label>
                                 <div class="billed-to">
                                     <h6>HARRAK ABDELILAH</h6>
                                     <p>CASABLANCA , CENTRE VILLE<br>
@@ -51,10 +51,10 @@
                                 </div>
                             </div>
                             <div class="col-md">
-                                <label class="tx-gray-600">Bon Details</label>
-                                <p class="invoice-info-row"><span>N° du Bon</span>
+                                <label class="tx-gray-600">تفاصيل الفاتورة</label>
+                                <p class="invoice-info-row"><span>رقم الفاتورة</span>
                                     <span>{{ $bonSorties->bon_number }}</span></p>
-                                <p class="invoice-info-row"><span>Date d'Entree</span>
+                                <p class="invoice-info-row"><span>تاريخ الفاتورة</span>
                                     <span>{{ $bonSorties->bon_date  }}</span></p>
                                 <p class="invoice-info-row"><span>القسم</span>
                                     <span>{{ $bonSorties->categorie->categorie_name }}</span></p>
