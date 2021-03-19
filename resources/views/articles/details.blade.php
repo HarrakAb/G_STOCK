@@ -39,10 +39,12 @@
                     <div class="col-xl-12">
 						<div class="card">
 							<div class="card-header pb-0">
+								<a href="{{ url('/articles')}}" class="btn btn-primary  float-left mt-3 mr-2" id="print_Button"> <i
+									class="fa fa-home ml-1"></i>رجوع</a>
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
                                         <h4 class="text-primary">حالة المخزن</h4>
-                                    </div>
+									</div>
 								</div>
 							</div>
 							<div class="card-body">
@@ -52,6 +54,7 @@
 											<tr>
 												<th>#</th>
 												<th>المنتوج</th>
+												<th>الوصف</th>
                                                 <th>القسم</th>
                                                 <th>الوارد</th>
 												<th>الصادر</th>
@@ -62,6 +65,7 @@
                                             <tr>
                                                 <td>{{$article->id}}</td>
                                                 <td>{{$article->reference}}</td>
+                                                <td>{{$article->description}}</td>
                                                 <td>{{$article->categorie->categorie_name}}</td>
                                                 <td>{{$entrees}}</td>
                                                 <td>{{$sorties}}</td>

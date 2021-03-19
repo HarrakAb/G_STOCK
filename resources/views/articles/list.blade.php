@@ -9,15 +9,15 @@
 
 @endsection
 @section('page-header')
-				<!-- breadcrumb -->
-				<div class="breadcrumb-header justify-content-between">
-					<div class="my-auto">
-						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">المنتوجات</h4><!-- <span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les articles</span> -->
-						</div>
-					</div>
-				</div>
-				<!-- breadcrumb -->
+	<!-- breadcrumb -->
+	<div class="breadcrumb-header justify-content-between">
+		<div class="my-auto">
+			<div class="d-flex">
+				<h4 class="content-title mb-0 my-auto">المنتوجات</h4><!-- <span class="text-muted mt-1 tx-13 mr-2 mb-0">/Tous les articles</span> -->
+			</div>
+		</div>
+	</div>
+	<!-- breadcrumb -->
 @endsection
 @section('content')
 				<!-- row -->
@@ -47,10 +47,9 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-striped mg-b-0 text-md-nowrap">
+									<table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center">
 										<thead>
 											<tr>
-												<th>#</th>
 												<th>رمز المنتوج</th>
                                                 <th>الوصف</th>
                                                 <th>القسم</th>
@@ -61,7 +60,6 @@
 										<tbody>
 											@foreach ($articles as $article)	
 												<tr>
-													<td>{{$article->id}}</td>
 													<td>{{$article->reference}}</td>
 													<td>{{$article->description}}</td>
 													<td>{{$article->categorie->categorie_name}}</td>
@@ -70,20 +68,21 @@
 													</td>
 													<td>
 													
-                                                    {{-- @can('modifie article') --}}
+                                                    @can('modifie article')
 														<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 														data-article_id="{{$article->id}}" data-reference="{{$article->reference}}"
 														data-categorie_name="{{$article->categorie->categorie_name}}"
+														data-unite_mesure="{{$article->unite_mesure}}"
 														data-description="{{$article->description}}" data-toggle="modal" href="#exampleModal2"
 														title="Edit"><i class="las la-pen"></i></a>
-													{{-- @endcan --}}
-													{{-- @can('supprime article') --}}
+													@endcan
+													@can('supprime article')
 														<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 														 data-article_id="{{$article->id}}" data-reference="{{$article->reference}}"
 														 data-toggle="modal"
 														 href="#modaldemo9" title="Delete"><i class="las la-trash"></i>
 														</a>
-													{{-- @endcan --}}
+													@endcan
 													</td>
 												</tr>										
 											@endforeach
@@ -116,7 +115,18 @@
 										 		<option value="{{ $categorie->id }}">{{ $categorie->categorie_name }}</option>
 											 @endforeach
 										 </select>
-                                    </div>
+									</div>
+									<div class="form-group">
+										<select name="unite_mesure" id="unite_mesure" class="form-control" type="text" required>
+											<option value="" selected disabled>الوحدة</option>	
+											<option value="5">5 KG</option>			
+											<option value="10">10 KG</option>			
+											<option value="15">15 KG </option>			
+											<option value="20">20 KG </option>			
+											<option value="25">25 KG </option>			
+											<option value="1">Unité</option>			
+										</select>
+								   </div>
                                     <div class="form-group">
                                         <label>الوصف</label> 
                                         <textarea name="description" class="form-control" type="textarea"></textarea>
@@ -152,12 +162,25 @@
 										<label for="recipient-name" class="col-form-label">رمز المنتوج</label>
 										<input class="form-control" name="reference" id="reference" type="text">
 									</div>
+									<div class="form-group">
 									<label class="my-1 mr-2" for="inlineFormCustomSelectPref">القسم</label>
 									<select name="categorie_name" id="categorie_name" class="custom-select my-1 mr-sm-2" required>
 										@foreach ($categories as $categorie)
 											<option>{{ $categorie->categorie_name }}</option>
 										@endforeach
 									</select>
+									</div>
+									<div class="form-group">
+										<select name="unite_mesure" id="unite_mesure" class="form-control" type="text" required>
+											<option value="" selected disabled>الوحدة</option>	
+											<option value="5">5 KG</option>			
+											<option value="10">10 KG</option>			
+											<option value="15">15 KG </option>			
+											<option value="20">20 KG </option>			
+											<option value="25">25 KG </option>			
+											<option value="1">Unité</option>			
+										</select>
+								   </div>
 									<div class="form-group">
 										<label for="message-text" class="col-form-label">الوصف</label>
 										<textarea class="form-control" id="description" name="description"></textarea>
@@ -204,6 +227,29 @@
 		<!-- main-content closed -->
 @endsection
 @section('js')
+ <!-- Internal Data tables -->
+ <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/jszip.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/pdfmake.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/vfs_fonts.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+ <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+ <!--Internal  Datatable js -->
+ <script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+ <!--Internal  Notify js -->
+ <script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
+ <script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
+
 <!--Internal  Datepicker js -->
 <script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
 <!-- Internal Select2 js-->
@@ -217,11 +263,13 @@
 		var button = $(event.relatedTarget)
 		var reference = button.data('reference')
 		var article_id = button.data('article_id')
+		var unite_mesure = button.data('unite_mesure')
 		var categorie_name = button.data('categorie_name')
 		var description = button.data('description')
 		var modal = $(this)
 		modal.find('.modal-body #reference').val(reference);
 		modal.find('.modal-body #article_id').val(article_id);
+		modal.find('.modal-body #unite_mesure').val(unite_mesure);
 		modal.find('.modal-body #categorie_name').val(categorie_name);
 		modal.find('.modal-body #description').val(description);
 	})

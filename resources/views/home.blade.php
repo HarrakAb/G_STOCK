@@ -25,11 +25,11 @@
 						</div>
 						<div>
 							<label class="tx-13">المبيعات شهريا</label>
-							<h5>563,275</h5>
+							<h5>00,00</h5>
 						</div>
 						<div>
 							<label class="tx-13">المبيعات سنويا</label>
-							<h5>7830,675</h5>
+							<h5>00,00</h5>
 						</div>
 					</div>
 				</div>
@@ -56,7 +56,11 @@
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											{{-- <h4 class="tx-20 font-weight-bold mb-1 text-white">{{ number_format(\App\Models\BonEntree::count() + \App\Models\BonSortie::count()) }}</h4> --}}
+											{{-- @if (number_format(\App\Models\BonEntree::count() + \App\Models\BonSortie::count()) != 0 )
+												<h4 class="tx-20 font-weight-bold mb-1 text-white">
+													{{ number_format(\App\Models\BonEntree::count() + \App\Models\BonSortie::count()) }}
+												</h4>								
+											@endif --}}
 										</div>
 										<span class="float-right my-auto mr-auto">
 											<i class="fas fa-arrow-circle-up text-white"></i>
@@ -77,11 +81,17 @@
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											{{-- <h4 class="tx-20 font-weight-bold mb-1 text-white">{{ number_format(\App\Models\BonEntree::count()) }}</h4> --}}
+											{{-- @if (number_format(\App\Models\BonSortie::count()) != 0 )
+												<h4 class="tx-20 font-weight-bold mb-1 text-white">
+													{{ number_format(\App\Models\BonSortie::count()) }}
+												</h4>		
+											@endif --}}
 										</div>
 										<span class="float-right my-auto mr-auto">
 											<i class="fas fa-arrow-circle-down text-white"></i>
-											{{-- <span class="text-white op-7">{{ number_format( \App\Models\BonEntree::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 )}}%</span> --}}
+											{{-- @if (number_format( \App\Models\BonEntree::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 ) != 0)
+												<span class="text-white op-7">{{ number_format( \App\Models\BonEntree::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 )}}%</span>												
+											@endif --}}
 										</span>
 									</div>
 								</div>
@@ -98,11 +108,15 @@
 								<div class="pb-0 mt-0">
 									<div class="d-flex">
 										<div class="">
-											{{-- <h4 class="tx-20 font-weight-bold mb-1 text-white">{{ number_format(\App\Models\BonSortie::count())  }}</h4> --}}
+											{{-- @if (number_format(\App\Models\BonEntree::count()))
+												<h4 class="tx-20 font-weight-bold mb-1 text-white">{{ number_format(\App\Models\BonEntree::count())  }}</h4>												
+											@endif --}}
 										</div>
 										<span class="float-right my-auto mr-auto">
 											<i class="fas fa-arrow-circle-up text-white"></i>
-											{{-- <span class="text-white op-7">{{  number_format( \App\Models\BonSortie::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 )}}%</span> --}}
+											{{-- @if ( number_format( \App\Models\BonSortie::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 ) != 0)
+												<span class="text-white op-7">{{  number_format( \App\Models\BonSortie::count() /( \App\Models\BonEntree::count() + \App\Models\BonSortie::count() ) * 100 )}}%</span>												
+											@endif --}}
 										</span>
 									</div>
 								</div>
@@ -136,86 +150,7 @@
 				<!-- row closed -->
 
 				<!-- row opened -->
-				{{-- <div style="height: 50% !important;" class="row row-sm">
-					<div class="container">
-						<div class="carousel slide" id="main-carousel" data-ride="carousel" data-interval="2500">
-							<ol class="carousel-indicators">
-								<li data-target="#main-carousel" data-slide-to="0" class="active"></li>
-								<li data-target="#main-carousel" data-slide-to="1"></li>
-								<li data-target="#main-carousel" data-slide-to="2"></li>
-								<li data-target="#main-carousel" data-slide-to="3"></li>
-							</ol><!-- /.carousel-indicators -->
-							
-							<div class="carousel-inner">
-								<div class="carousel-item active">
-									<img class="d-block img-fluid" src="https://s19.postimg.cc/qzj5uncgj/slide1.jpg" alt="">
-									<div class="carousel-caption d-none d-md-block">
-										<h1>Mountain</h1>
-									</div>
-								</div>
-								<div class="carousel-item">
-									<img class="d-block img-fluid" src="https://s19.postimg.cc/lmubh3h0j/slide2.jpg" alt="">
-									<div class="carousel-caption d-none d-md-block">
-										<h3>Mountain</h3>
-										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
-									</div>
-								</div>
-								<div class="carousel-item">
-									<img class="d-block img-fluid" src="https://s19.postimg.cc/99hh9lr5v/slide3.jpg" alt="">
-									<div class="carousel-caption d-none d-md-block">
-										<h3>Mountain</h3>
-										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
-									</div>
-								</div>
-								<div class="carousel-item">
-									<img src="https://s19.postimg.cc/nenabzsnn/slide4.jpg" alt="" class="d-block img-fluid">
-									<div class="carousel-caption d-none d-md-block">
-										<h3>Mountain</h3>
-										<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci esse vitae exercitationem fugit, numquam minus!</p>
-									</div>
-								</div>
-							</div><!-- /.carousel-inner -->
-							
-							<a href="#main-carousel" class="carousel-control-prev" data-slide="prev">
-								<span class="carousel-control-prev-icon"></span>
-								<span class="sr-only" aria-hidden="true">Prev</span>
-							</a>
-							<a href="#main-carousel" class="carousel-control-next" data-slide="next">
-								<span class="carousel-control-next-icon"></span>
-								<span class="sr-only" aria-hidden="true">Next</span>
-							</a>
-						</div><!-- /.carousel -->
-					</div>
-					<!-- /.container -->
-				</div> --}}
-				 {{-- <div class="row row-sm">
-					<div class="col-md-12 col-lg-12 col-xl-7">
-						<div class="card">
-							<div class="card-header bg-transparent pd-b-0 pd-t-20 bd-b-0">
-								<div class="d-flex justify-content-between">
-									<h4 class="card-title mb-0">إحصائية الفواتير بالنسبة المؤية</h4>
-									<i class="mdi mdi-dots-horizontal text-gray"></i>
-								</div>
-								<p class="tx-12 text-muted mb-0"></p>
-							</div>
-							<div class="card-body" style="width: 75%;">
-								
-							</div> 
-							
-						</div>
-						
-					</div>
 					
-					<div class="col-lg-12 col-xl-5">
-						<div class="card card-dashboard-map-one">
-							<label class="main-content-label">Sales Revenue by Customers in USA</label>
-							<span class="d-block mg-b-20 text-muted tx-12">Sales Performance of all states in the United States</span>
-							<div class="">
-								<div class="vmap-wrapper ht-180" id="vmap2"></div>
-							</div>
-						</div>
-					</div>
-				</div>  --}}
 				<!-- row closed -->
 			</div>
 		</div>
@@ -235,7 +170,7 @@
 <script src="{{URL::asset('assets/js/dashboard.sampledata.js')}}"></script>
 <script src="{{URL::asset('assets/js/chart.flot.sampledata.js')}}"></script>
 <!--Internal Apexchart js-->
-<script src="{{URL::asset('assets/js/apexcharts.js')}}"></script>
+{{-- <script src="{{URL::asset('assets/js/apexcharts.js')}}"></script> --}}
 <!-- Internal Map -->
 <script src="{{URL::asset('assets/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
@@ -249,5 +184,11 @@
 <script src="{{URL::asset('assets/plugins/notify/js/notifIt.js')}}"></script>
 <script src="{{URL::asset('assets/plugins/notify/js/notifit-custom.js')}}"></script>
 
+<script type = "text/JavaScript">
+	
+	window.setTimeout(function () {
+		window.location.reload();
+	}, 180000);
+ </script>
 
 @endsection

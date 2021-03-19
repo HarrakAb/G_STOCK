@@ -14,4 +14,8 @@ class SortieDetail extends Model
     public function bonSortie(){
         return $this->belongsTo(BonSortie::class, 'bon_sorties_id' , 'id');
     }
+
+    public function article(){
+        return $this->hasMany(Article::class,'article_id' , 'id');
+    }
 }

@@ -15,11 +15,13 @@ class CreateSortieDetailsTable extends Migration
     {
         Schema::create('sortie_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bon_sorties_id')->references('id')->on('bon_sorties')->onDelete('cascade');
+            $table->foreignId('bon_sorties_id')->constrained('bon_sorties')->onDelete('cascade');
             $table->string('article');
-            $table->decimal('quantite');
-            $table->decimal('prix_unitaire' , 8,2);
-            $table->decimal('prix_total' , 8,2);
+            $table->string('description');
+            $table->bigInteger('quantite');
+            $table->bigInteger('total_quantite');
+            $table->double('prix_unitaire' , 12,2);
+            $table->double('prix_total' , 12,2);
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class CreateSortieDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bons');
+        Schema::dropIfExists('sortie_details');
     }
 }

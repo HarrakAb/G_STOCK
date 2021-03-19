@@ -27,22 +27,19 @@
 @section('content')
     <!-- row -->
     <div class="row row-sm">
-        <div class="col-md-12 col-xl-12">
+        <div class="col-md-10 col-xl-10 mx-auto">
             <div class=" main-content-body-invoice" id="print">
                 <div class="card card-invoice">
                     <div class="card-body">
                         <div class="invoice-header">
-                            <h1 class="invoice-title">Bon d'Entree</h1>
+                            <h1 class="invoice-title">Bon d'Entree/وصل الإستلام</h1>
                             <div class="billed-from">
                                 <label class="tx-gray-600">من :</label>
                                 <h6>{{ $bonEntrees->client_name }}</h6>
-                                <p>Address<br>
-                                    Tel No: 0600000000<br>
-                                </p>
                             </div><!-- billed-from  من -->
                         </div><!-- invoice-header -->
                         <div class="row mg-t-20">
-                            <div class="col-md">
+                            <div class="col-6">
                                 <label class="tx-gray-600">تفاصيل الفاتورة</label>
                                 <p class="invoice-info-row"><span>رقم الفاتورة</span>
                                     <span>{{ $bonEntrees->bon_number }}</span></p>
@@ -56,6 +53,7 @@
                                 <thead>
                                     <tr  style="background-color:rgb(209, 205, 205);">
                                         <th class="tx-center">المنتوج</th>
+                                        <th class="tx-center">الوصف</th>
                                         <th class="tx-center">الكمية</th>
                                         <th class="tx-right">ثمن الوحدة</th>
                                         <th class="tx-center">المبلغ الإجمالي للمنتوج</th>
@@ -65,7 +63,8 @@
                                     @foreach ($bonEntrees->bons as $item)
                                         <tr>
                                             <td class="tx-center">{{ $item->article }}</td>
-                                            <td class="tx-center">{{ $item->quantite }}</td>
+                                            <td class="tx-center">{{ $item->description }}</td>
+                                            <td class="tx-center">{{ $item->total_quantite }}</td>
                                             <td class="tx-right">{{ number_format($item->prix_unitaire, 2) }}</td>
                                             <td class="tx-center">{{ number_format($item->prix_total, 2) }}</td>
                                         </tr>             
@@ -88,10 +87,10 @@
 
 
 
-                        <button class="btn btn-danger  float-left mt-3 mr-2" id="print_Button" onclick="printDiv()"> <i
-                                class="mdi mdi-printer ml-1"></i>طباعة</button>
-                        <a href="{{ url('/bonSorties')}}" class="btn btn-primary  float-left mt-3 mr-2" id="print_Button"> <i
-                                    class="fa fa-home ml-1"></i>رجوع</a>
+                        <button class="btn btn-danger  float-left mt-3 mr-2" id="print_Button" onclick="printDiv()">
+                             <i class="mdi mdi-printer ml-1"></i>طباعة</button>
+                        <a href="{{ url('/bonEntrees')}}" class="btn btn-primary  float-left mt-3 mr-2" id="print_Button">
+                             <i class="fa fa-home ml-1"></i>رجوع</a>
                     </div>
                 </div>
             </div>

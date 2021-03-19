@@ -66,7 +66,8 @@ class CheckStock extends Notification
         //    'data' => $this->details['body']
             //'id'     => $this->article->id,
            'article' => $this->article->reference,
-           'stock'   => $this->article->stock
+           'stock'   => $this->article->stock,
+           'commande' => '',
         ];
     }
 }

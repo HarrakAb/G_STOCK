@@ -55,17 +55,30 @@
                             <div class="col">
                                 <label for="bon_number" class="control-label">رقم الفاتورة</label>
                                 <input type="text" class="form-control" name="bon_number"
-                                    title="entrée le numéro de votre bon" required>
+                                    value="{{ $bon_number  }}"   title="entrée le numéro de votre bon" required readonly>
+                                    @error('bon_number')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                             </div>
                             <div class="col">
                                 <label>تاريخ الفاتورة</label>
                                 <input class="form-control fc-datepicker" name="bon_date" placeholder="YYYY-MM-DD"
-                                    type="text" value="{{ date('Y-m-d') }}" required>
+                                      type="text" value="{{ date('Y-m-d') }}" required>
+                                    @error('bon_date')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                             </div>
                             <div class="col">
-                                <label for="client_name" class="control-label">إسم الزبون</label>
-                                <input type="text" class="form-control" name="client_name" title="entrée le nom de client"
-                                    required>
+                                <label for="client_name" class="control-label">إسم المورّد</label>
+                                <select id="client_name" name="client_name" class="form-control custom_select client_name" required>
+                                    <option value="" selected disabled>إسم المورّد</option>
+                                        @foreach ($fournisseurs as $fournisseur)
+                                            <option value="{{ $fournisseur->full_name }}">
+                                                {{ $fournisseur->full_name }}</option>
+                                        @endforeach
+                                </select>
+                                {{-- <input type="text" class="form-control" name="client_name" title="entrée le nom de client"
+                                        value="{{ old('client_name') }}"  required>
+                                    @error('client_name')<span class="help-block text-danger">{{ $message }}</span>@enderror --}}
+
                             </div>
                         </div>
                         </br>
@@ -77,7 +90,10 @@
                                     <tr>
                                         <th class="border-bottom-0"></th>
                                         <th class="border-bottom-0">المنتوج</th>
+                                        <th class="border-bottom-0">الوصف</th>
+                                        <th class="border-bottom-0">الوحدة</th>
                                         <th class="border-bottom-0">الكمية</th>
+                                        <th class="border-bottom-0">إجمالي الكمية</th>
                                         <th class="border-bottom-0">ثمن الوحدة</th>
                                         <th class="border-bottom-0"> المبلغ الإجمالي للمنتوج</th>
                                         <th class="border-bottom-0">
@@ -90,22 +106,39 @@
                                         <td>
                                             1
                                         </td>
-                                        <td>
-                                            <select id="article" name="article[]" class="form-control article" >
+                                        <td style="width:15%"> 
+                                            <select id="article" name="article[]" class="form-control article" required>
                                                 <option value="" selected disabled>إختر المنتوج</option>
                                                 @foreach ($articles as $article)
                                                     <option value="{{ $article->reference }}">
                                                         {{ $article->reference }}</option>
                                                 @endforeach
                                             </select>
-                                        </td>
-                                  
-                                        <td style="width:15%">
-                                            <input type="number" name="quantite[]" class="form-control quantite" id="quantite"/>
+                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                                         </td>
                                         <td style="width:15%">
-                                            <input type="number" name="prix_unitaire[]"
-                                                class="form-control prix_unitaire" id="prix_unitaire"/>
+                                            <input type="hidden" name="description_id" class="description_id"  id="description_id" value="1">
+                                            <input type="text" name="description[]" class="form-control description" id="description1" readonly required/>
+                                            @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                        </td>
+                                        <td style="width:10%">
+                                            <input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure1" readonly required/>
+                                        </td>            
+                                        <td style="width:15%">
+                                            <input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="1" required/>
+                                            <input type="number" value="{{ old('quantite[]') }}"  name="quantite[]" class="form-control quantite" id="quantite" required/>
+                                            @error('quantite')<span class="help-block text-danger">{{ $message }}</span>@enderror                           
+                                        </td>
+                                        <td style="width:15%">
+                                            <input type="number" value="0" name="total_quantite[]" class="form-control total_quantite" id="total_quantite" readonly required/>
+                                            @error('total_quantite')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                        </td>
+                                        <td style="width:15%">
+                                            <input type="number" name="prix_unitaire[]" step="any" value="{{ old('prix_unitaire[]') }}" 
+                                                class="form-control prix_unitaire" id="prix_unitaire" required/>
+                                                @error('prix_unitaire')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                                         </td>
                                         <td style="width:15%">
                                             <input type="number" name="prix_total[]" value="0.00" class="form-control prix_total"
@@ -186,14 +219,17 @@
             var categorie = $('.categorie').html();
             var numberOfRow = ($('.addMoreArticle tr').length - 0) + 1;
             var tr = '<tr><td class="no">' + numberOfRow + '</td>' +
-                '<td><select id="article" class="form-control SelectBox" name="article[]">' +
+                '<td style="width:15%"><select id="article" class="form-control SelectBox article" name="article[]">' +
                 '<option value="" selected disabled>إختر المنتوج</option>' + 
                 ' @foreach ($articles as $article)' +
                 '  <option value="{{ $article->reference }}"> '+
                 ' {{ $article->reference }}</option> ' +
                 ' @endforeach '+
                 '</select></td>' +
-                '<td style="width:15%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/></td>' +
+                '<td style="width:15%"><input type="hidden" name="description_id" class="description_id"  id="description_id" value="'+numberOfRow+'"><input type="text" data-description_id="'+numberOfRow+'" name="description[]" class="form-control description" id="description'+numberOfRow+'" readonly required/>@error("description")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
+                '<td style="width:10%"><input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure'+numberOfRow+'" readonly required/></td>'+
+                '<td style="width:15%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/><input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="'+numberOfRow+'" required/></td>' +
+                '<td style="width:15%"><input type="number" value="0"  name="total_quantite[]" class="form-control total_quantite" id="total_quantite" readonly required/>@error("total_quantite")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
                 '<td style="width:15%"><input type="number" name="prix_unitaire[]" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
                 '<td style="width:15%"><input type="number" name="prix_total[]" class="form-control prix_total" value="0.00" id="prix_total" readonly/></td>' +
                 '<td><a href="#" class="btn btn-danger btn-sm delete"><i class="fa fa-times"></i></a></td>';
@@ -222,6 +258,7 @@
             $('.total').val((total).toFixed(2));
 
         };
+
         //subTotal
         $(document).ready(function(){
 
@@ -236,6 +273,19 @@
 
 
         })
+        $(document).ready(function(){
+
+            $('#bon').on('keyup blur', '.quantite', function(){
+                let row = $(this).closest('tr');
+                let quantity = row.find('.quantite').val() || 0;
+                let unite_mesure = row.find('.unite_mesure').val() || 0;
+
+                row.find('.total_quantite').val((quantity * unite_mesure));
+                TotalAmount();
+            });
+
+
+        });
 
 
         // end Total and sub Total //
@@ -269,6 +319,29 @@
                 }
             });
         });
+
+             ///////////  get Description and Unite_mesure of Product ////
+
+             $(document).on('change', 'select[name="article[]"]', function(){
+
+                let row = $(this).closest('tr');
+                let description_id = row.find('#description_id').val();
+                let unite_mesure_id = row.find('#unite_mesure_id').val();
+                var reference = $(this).val();
+                var url = "{{ URL::to('article') }}/" + reference;
+                //console.log(description_id);
+                $.ajax({
+                    url: url,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response){
+                        if(response != null){
+                            $('#description'+description_id).val(response.description);
+                            $('#unite_mesure'+unite_mesure_id).val(response.unite_mesure);
+                        }
+                    }
+                });
+            });
 
     </script>
 @endsection

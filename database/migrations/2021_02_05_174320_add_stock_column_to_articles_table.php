@@ -14,7 +14,7 @@ class AddStockColumnToArticlesTable extends Migration
     public function up()
     {
         Schema::table('articles', function (Blueprint $table) {
-            $table->unsignedInteger('stock')->after('categorie_id')->default(5);
+            $table->unsignedInteger('stock')->after('categorie_id')->default(0);
         });
     }
 

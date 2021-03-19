@@ -55,18 +55,26 @@ class ArticlesController extends Controller
     public function store(Request $request, Article $article)
     {
         //return $request;
-        $this->validate($request,[
-            'reference' => 'required|unique:articles|max:255',
-            'description' => 'required',
-            'categorie_id' => 'required'
-        ]);
+        try {
+            $this->validate($request,[
+                'reference' => 'required|unique:articles|max:255',
+                'unite_mesure' => 'required',
+                'description' => 'required',
+                'categorie_id' => 'required'
+            ]);
 
-        $article->reference = $request->input('reference');
-        $article->description = $request->input('description');
-        $article->categorie_id = $request->input('categorie_id');
-        $article->save();
-        session()->flash('success', 'تم الحفظ بنجاح');
-        return redirect('/articles');
+            $article->reference = $request->input('reference');
+            $article->unite_mesure = $request->input('unite_mesure');
+            $article->description = $request->input('description');
+            $article->categorie_id = $request->input('categorie_id');
+            $article->save();
+            session()->flash('success', 'تم الحفظ بنجاح');
+            return redirect('/articles');
+        }
+
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -100,22 +108,30 @@ class ArticlesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'reference' => 'required',
-            'description' => 'required',
-            'categorie_name' => 'required',
-            
-        ]);
-        $id = Categorie::where('categorie_name',$request->categorie_name)->first()->id;
+        try {
+            $this->validate($request,[
+                'reference' => 'required',
+                'unite_mesure' => 'required',
+                'description' => 'required',
+                'categorie_name' => 'required',
+                
+            ]);
+            $id = Categorie::where('categorie_name',$request->categorie_name)->first()->id;
 
-        
-        $article = Article::findOrFail($request->article_id);
-        $article->reference = $request->input('reference');
-        $article->categorie_id = $id;
-        $article->description = $request->input('description');
-        $article->save();
-        session()->flash('success', 'تم التعديل بنجاح');
-        return redirect('/articles');
+            
+            $article = Article::findOrFail($request->article_id);
+            $article->reference = $request->input('reference');
+            $article->unite_mesure = $request->input('unite_mesure');
+            $article->categorie_id = $id;
+            $article->description = $request->input('description');
+            $article->save();
+            session()->flash('success', 'تم التعديل بنجاح');
+            return redirect('/articles');
+        }
+
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 
     }
 
@@ -144,14 +160,30 @@ class ArticlesController extends Controller
         return view('articles.details',compact('entrees','sorties','article'));
     }
 
+    public function details()
+    {
+        //$entrees = EntreeDetail::where('article',$reference)->sum('quantite');
+        $articles = Article::where('stock' ,'<',10)->get();
+        //$sorties  = SortieDetail::where('article',$reference)->sum('quantite');
+       // $attachments  = Invoices_Attachment::where('invoice_id',$id)->get();
+
+        return view('articles.details2',compact('articles'));
+    }
+
     public function MarkAsRead_all(){
 
-        $userUnreadNotifications = auth()->user()->unreadNotifications;
+        $userUnreadNotifications = auth()->user()->unreadNotifications->where('type' , 'App\Notifications\CheckStock');
 
         if($userUnreadNotifications){
             $userUnreadNotifications->markAsRead();
             return back();
         }
 
+    }
+
+    public function getStock(){
+
+        $articles = Article::where('stock' ,'>', 1)->get();
+        return view('stock.details',compact('articles'));
     }
 }

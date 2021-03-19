@@ -52,7 +52,7 @@
 											<tr>
 												<th>#</th>
 												<th>القسم</th>
-												<th>الوصف</th>
+												<th>العمليات</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -61,17 +61,17 @@
 													<th scope="row">{{$categorie->id}}</th>
 													<td>{{$categorie->categorie_name}}</td>
 													<td>
-													{{-- @can('modifie categorie') --}}
+													@can('modifie categorie')
 														<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 														   data-id="{{ $categorie->id }}" data-categorie_name="{{ $categorie->categorie_name }}"
 														   data-toggle="modal" href="#exampleModal2"
 														   title="Edit"><i class="las la-pen"></i></a>
-													{{-- @endcan --}}
-													{{-- @can('supprime categorie') --}}
+													@endcan
+													@can('supprime categorie')
 														<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 														   data-id="{{ $categorie->id }}" data-categorie_name="{{ $categorie->categorie_name }}" data-toggle="modal"
 														   href="#modaldemo9" title="Delete"><i class="las la-trash"></i></a>
-													{{-- @endcan --}}
+													@endcan
 												</td>
 												</tr>										
 											@endforeach

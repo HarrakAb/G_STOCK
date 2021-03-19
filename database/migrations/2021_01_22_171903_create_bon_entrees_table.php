@@ -18,7 +18,7 @@ class CreateBonEntreesTable extends Migration
             $table->string('bon_number', 50);
             $table->date('bon_date')->nullable();
             $table->string('client_name' , 50);
-            $table->decimal('total',8,2)->default(0.00);
+            $table->double('total',12,2)->default(0.00);
             $table->string('created_by');
             $table->softDeletes();
             $table->timestamps();

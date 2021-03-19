@@ -19,6 +19,7 @@
         "laravelcollective/html": "^6.2",
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
+        "pusher/pusher-php-server": "^5.0",
         "spatie/laravel-permission": "^3.17"
     },
     "require-dev": {

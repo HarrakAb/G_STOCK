@@ -17,4 +17,5 @@ class BonSortie extends Model
     public function bons(){
         return $this->hasMany(SortieDetail::class,'bon_sorties_id' , 'id');
     }
+
 }

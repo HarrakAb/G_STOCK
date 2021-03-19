@@ -11,31 +11,44 @@
 					<div class="main-header-right">					
 						<div class="nav nav-item  navbar-nav-right ml-auto">
 							<div class="dropdown nav-item main-header-notification">
-								<a class="new nav-link" href="#">
-								<svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class=" pulse-danger"></span></a>
+
+									<a class="new nav-link" href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+										@foreach(auth()->user()->unreadNotifications as $notification)
+											@if (auth()->user()->unreadNotifications && $notification->type =='App\Notifications\CheckStock')
+												<span class=" pulse-danger"></span>										
+											@endif
+										@endforeach
+									</a>
+
 								<div class="dropdown-menu">
 									<div class="menu-header-content bg-primary text-right">
 										<div class="d-flex">
 											<h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">Notifications</h6>
 											<span class="badge badge-pill badge-warning mr-auto my-auto float-left"><a href="\MarkAsRead_all">Marqué Comme Lu</a></span>
 										</div>
-										<p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">Notifications Non Lu : <span style="color: yellow; font-size:16px; text-style:bold">{{ auth()->user()->unreadNotifications->count() }} </span></p>
+										<p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">Notifications Non Lu : <span style="color: yellow; font-size:16px; text-style:bold">{{ auth()->user()->unreadNotifications->where('type' , 'App\Notifications\CheckStock')->count() }} </span></p>
 									</div>
 										@foreach(auth()->user()->unreadNotifications as $notification)
-										<div class="main-notification-list Notification-scroll">
-											<a class="d-flex p-3 border-bottom" href="{{ url('detail') }}/{{ $notification->data['article'] }}">
-												<div class="notifyimg bg-pink">
-													<i class="fas fa-boxes"></i>
+											@if (auth()->user()->unreadNotifications && $notification->type =='App\Notifications\CheckStock')
+												<div class="main-notification-list Notification-scroll">
+													<a class="d-flex p-3 border-bottom" href="{{ url('details') }}">
+														<div class="notifyimg bg-pink">
+															<i class="fas fa-boxes"></i>
+														</div>
+														{{-- @foreach ($notification as $item)
+															
+														@endforeach --}}
+														<div class="mr-3">
+															<h5 class="notification-label mb-1"> المرجو التأكد من المخزن</h5>
+															{{-- <div class="notification-label mb-1">{{ $notification->data['stock'] }} : Est </div> --}}
+														</div>
+														<div class="mr-auto" >
+															<i class="las la-angle-left text-left text-muted"></i>
+														</div>
+													</a>
 												</div>
-												<div class="mr-3">
-													<h5 class="notification-label mb-1"> Le Stock de : {{ $notification->data['article'] }}</h5>
-													<div class="notification-label mb-1">{{ $notification->data['stock'] }} : Est </div>
-												</div>
-												<div class="mr-auto" >
-													<i class="las la-angle-left text-left text-muted"></i>
-												</div>
-											</a>
-										</div>
+											@endif
 										@endforeach
 									
 									@if (auth()->user()->unreadNotifications->count() != 0)
@@ -43,6 +56,44 @@
 											<a href="">VOIR TOUS</a>
 										</div>		
 									@endif
+								</div>
+							</div>
+							{{-- Commande Notification --}}
+							<div class="dropdown nav-item main-header-notification">
+
+									<a class="new nav-link" href="#">
+										<svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+										@foreach(auth()->user()->unreadNotifications as $notification)
+											@if (auth()->user()->unreadNotifications && $notification->type =='App\Notifications\CommandeNotif')
+												<span class=" pulse"></span>										
+											@endif
+										@endforeach
+									</a>
+
+								<div class="dropdown-menu">
+									<div class="menu-header-content bg-primary text-right">
+										<div class="d-flex">
+											<h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">Notifications</h6>
+											<span class="badge badge-pill badge-warning mr-auto my-auto float-left"><a href="\MarkAsRead">Marqué Comme Lu</a></span>
+										</div>
+										<p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0 tx-12 ">Notifications Non Lu : <span style="color: yellow; font-size:16px; text-style:bold">{{ auth()->user()->unreadNotifications->where('type' , 'App\Notifications\CommandeNotif')->count() }} </span></p>
+									</div>
+										@foreach(auth()->user()->unreadNotifications as $notification)
+											@if (auth()->user()->unreadNotifications && $notification->type =='App\Notifications\CommandeNotif')
+												<div class="main-notification-list Notification-scroll">
+													<a class="d-flex p-3 border-bottom" href="{{ url('commandeDetail') }}/{{ $notification->data['commande'] }}">												
+															<i style="margin-top: -4%;" class="fas fa-envelope-open-text mb-2"></i>
+															تفاصيل الطلب
+													</a>
+												</div>
+											@endif
+										@endforeach
+									
+										@if (auth()->user()->unreadNotifications->count() != 0)
+											<div class="dropdown-footer">
+												<a href="">VOIR TOUS</a>
+											</div>		
+										@endif
 								</div>
 							</div>
 							<div class="nav-item full-screen fullscreen-button">

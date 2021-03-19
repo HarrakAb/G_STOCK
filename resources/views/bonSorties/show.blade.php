@@ -5,6 +5,26 @@
             #print_Button {
                 display: none;
             }
+          
+        }
+        .bord{
+            border:0.15rem solid rgb(7, 6, 6);
+        }
+        .bord-b{
+            border-bottom:0.15rem solid rgb(7, 6, 6);
+        }
+        .bor{
+            line-height:3px !important;
+        }
+        .titre{
+            position: relative;
+            left: -42%;margin-top: 8%;
+        }
+        .color{
+            background-color: rgb(238, 237, 237);
+            padding:0 8px;
+            padding-top:10px; 
+            text-color:black
         }
     </style>
 @endsection
@@ -30,56 +50,60 @@
         <div class="col-md-12 col-xl-12">
             <div class=" main-content-body-invoice" id="print">
                 <div class="card card-invoice">
-                    <div class="card-body">
-                        <div class="invoice-header">
-                            <h1 class="invoice-title">Bon de sortie</h1>
+                    <div class="card-body" >
+                        <div class="invoice-header color">
+                            <h1 class="mt-1">بيع المواد الغذائية</h1>
+                            <h6 class="invoice-title titre">bon de Livraison / وصل التسليم </h6>
                             <div class="billed-from">
-                                <label class="tx-gray-600">من :</label>
-                                <h6>Nom du Magasin</h6>
-                                <p>Address<br>
-                                    Tel No: 0600000000<br>
+                                <label class="tx-gray-700">De / من :</label>
+                                <p>DRISS</p>
+                                <p>ERRAHMA<br>
+                                    Tel No: +212638332717<br>
                                 </p>
                             </div><!-- billed-from  من -->
                         </div><!-- invoice-header -->
                         <div class="row mg-t-20">
                             <div class="col-md">
-                                <label class="tx-gray-600">إلى :</label>
+                                <label class="tx-gray-700"> à / إلى : </label>
                                 <div class="billed-to">
-                                    <h6>{{ $bonSorties->client_name }}</h6>
+                                    <p>{{ $bonSorties->client_name }}</p>
                                     <p>{{ $bonSorties->client_address }}<br>
-                                        Tel No: {{ $bonSorties->client_phone }}<br>
+                                       <br>
                                     </p>
                                 </div>
                             </div>
                             <div class="col-md">
-                                <label class="tx-gray-600">تفاصيل الفاتورة</label>
-                                <p class="invoice-info-row"><span>رقم الفاتورة</span>
+                                <label class=""> Détails / تفاصيل الفاتورة</label>
+                                <p class="invoice-info-row"><span> N° de Bon / رقم الفاتورة &nbsp;&nbsp;:</span>
                                     <span>{{ $bonSorties->bon_number }}</span></p>
-                                <p class="invoice-info-row"><span>تاريخ الفاتورة</span>
+                                <p class="invoice-info-row"><span> Date Du Bon / تاريخ الفاتورة &nbsp;&nbsp;:</span>
                                     <span>{{ $bonSorties->bon_date  }}</span>
                                 </p>
                             </div>
                         </div>
                         <div class="table-responsive mg-t-40">
-                            <table class="table table-invoice border text-md-nowrap mb-0">
-                                <thead>
-                                    <tr  style="background-color:rgb(209, 205, 205);">
-                                        <th class="tx-center">المنتوج</th>
-                                        <th class="tx-center">الكمية</th>
-                                        <th class="tx-right">ثمن الوحدة</th>
-                                        <th class="tx-center">المبلغ الإجمالي للمنتوج</th>
+                            <table class="table table-invoice text-md-nowrap mb-0">
+                                <thead class="bord">
+                                    <tr style="background-color:rgb(238, 237, 237);">
+                                        <th class="tx-center bord"> Produit / المنتوج</th>
+                                        <th class="tx-center bord"> Designation / الوصف</th>
+                                        <th class="tx-center bord">Quantité / الكمية</th>
+                                        <th class="tx-center bord">Prix unitaire / ثمن الوحدة</th>
+                                        <th class="tx-center bord">Sous-Total / المبلغ الإجمالي للمنتوج</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="bord">
                                     @foreach ($bonSorties->bons as $item)
-                                        <tr>
-                                            <td class="tx-center">{{ $item->article }}</td>
-                                            <td class="tx-center">{{ $item->quantite }}</td>
-                                            <td class="tx-right">{{ number_format($item->prix_unitaire, 2) }}</td>
-                                            <td class="tx-center">{{ number_format($item->prix_total, 2) }}</td>
+                                        <tr >
+                                            <td class="tx-center bor">{{ $item->article }}</td>
+                                            <td class="tx-center bor">{{ $item->description }}</td>
+                                            <td class="tx-center bor">{{ $item->total_quantite }}</td>
+                                            <td class="tx-center bor">{{ number_format($item->prix_unitaire, 2) }}</td>
+                                            <td class="tx-center bor">{{ number_format($item->prix_total, 2) }}</td>
                                         </tr>             
                                     @endforeach
-
+                                </tbody> 
+                                <tfoot>
                                      <tr>
                                         <td class="valign-middle" colspan="2" rowspan="4">
                                             <div class="invoice-notes">
@@ -87,14 +111,15 @@
 
                                             </div><!-- invoice-notes -->
                                         </td>
-                                        <td style="margin-top: 3% !important; background-color:rgb(209, 205, 205);" class="tx-right">الاجمالي للفاتورة</td>
-                                        <td style="margin-top: 3%; background-color:rgb(209, 205, 205);" class="tx-right bg-gray" colspan="2"> {{ number_format($bonSorties->total, 2) }}</td>
+                                        <td style="margin-top: 3% !important; background-color:rgb(238, 237, 237);" class="tx-center bord bord-b">Total / الاجمالي للفاتورة</td>
+                                        <td style="margin-top: 3%; background-color:rgb(238, 237, 237);" class="tx-center bord bord-b" colspan="2"> {{ number_format($bonSorties->total, 2) }}&nbsp;&nbsp;درهم/DH </td>
                                     </tr>
-                                </tbody> 
+                                </tfoot>
                             </table>
+                            <hr class="mg-b-40">
+                            <br><br>
+                            <h5>توقيع  : </h5>
                         </div>
-                        <hr class="mg-b-40">
-
 
 
                         <button class="btn btn-danger  float-left mt-3 mr-2" id="print_Button" onclick="printDiv()"> <i

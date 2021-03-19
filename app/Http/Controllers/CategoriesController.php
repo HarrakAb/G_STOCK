@@ -45,15 +45,24 @@ class CategoriesController extends Controller
      */
     public function store(Request $request, Categorie $categorie)
     {
-        $this->validate($request,[
-            'categorie_name' => 'required|unique:categories|max:255',
-        ]);
- 
-        $categorie->categorie_name = $request->input('categorie_name');
-        $categorie->created_By = Auth::user()->name;
-        $categorie->save();
-        session()->flash('success', 'تم الحفظ بنجاح');
-        return redirect('/categories');
+
+        try {
+
+            $this->validate($request,[
+                'categorie_name' => 'required|unique:categories|max:255',
+            ]);
+    
+            $categorie->categorie_name = $request->input('categorie_name');
+            $categorie->created_By = Auth::user()->name;
+            $categorie->save();
+            session()->flash('success', 'تم الحفظ بنجاح');
+            return redirect('/categories');
+
+        }
+
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -87,17 +96,25 @@ class CategoriesController extends Controller
      */
     public function update(Request $request)
     {
-        $id = $request->id;
-        $this->validate($request,[
-            'categorie_name' => 'required|max:255|unique:categories,categorie_name,'.$id,
-        ]);
+        
+        try {
 
-        $categorie = Categorie::find($id);
-        $categorie->categorie_name = $request->input('categorie_name');
-        $categorie->save();
+            $id = $request->id;
+            $this->validate($request,[
+                'categorie_name' => 'required|max:255|unique:categories,categorie_name,'.$id,
+            ]);
 
-        session()->flash('success','تم التعديل بنجاح');
-        return redirect('/categories');
+            $categorie = Categorie::find($id);
+            $categorie->categorie_name = $request->input('categorie_name');
+            $categorie->save();
+
+            session()->flash('success','تم التعديل بنجاح');
+            return redirect('/categories');
+        }
+
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
 
     }
 

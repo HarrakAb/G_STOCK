@@ -57,25 +57,33 @@
                                 <label for="bon_number" class="control-label">رقم الفاتورة</label>
                                 <input type="text" class="form-control" name="bon_number"
                                     title="entrée le numéro de votre bon" value="{{ old('bon_number' , $bonSorties->bon_number )}}" required>
+                                    @error('bon_number')<span class="help-block text-danger">{{ $message }}</span>@enderror
                             </div>
                             <div class="col">
                                 <label>تاريخ الفاتورة</label>
                                 <input class="form-control fc-datepicker" name="bon_date" placeholder="YYYY-MM-DD"
                                     type="text" value="{{ old('bon_date', $bonSorties->bon_date ) }}"  required>
+                                    @error('bon_date')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                             </div>
                             <div class="col">
                                 <label for="client_name" class="control-label">إسم الزبون</label>
                                 <input type="text" class="form-control" name="client_name" title="entrée le nom de client"
                                         value="{{ old('client_name', $bonSorties->client_name ) }}"   required>
+                                        @error('client_name')<span class="help-block text-danger">{{ $message }}</span>@enderror
                             </div>
 
                             <div class="col-3">
                                 <label>عنوان الزبون</label>
                                 <input class="form-control" name="client_address" type="text" value="{{ old('client_address' , $bonSorties->client_address )}}" required>
+                                @error('client_address')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                             </div>
                             <div class="col">
                                 <label>هاتف الزبون</label>
                                 <input class="form-control" name="client_phone" type="text" value="{{ old('client_phone', $bonSorties->client_phone ) }}" required>
+                                @error('client_phone')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                             </div>
                         </div>
                         </br>
@@ -103,24 +111,31 @@
                                             1
                                         </td>
                                         <td>
-                                            <select id="article" name="article[{{$loop->index}}]" class="form-control article" >
+                                            <select id="article" name="article[{{$loop->index}}]" class="form-control article" required>
                                                 <option value="" selected disabled>{{ $item->article}}</option>
                                                 @foreach ($articles as $article)
                                                     <option value="{{ $article->reference }}">
                                                         {{ $article->reference}}</option>
                                                 @endforeach
                                             </select>
+                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                                         </td>
                                         <td style="width:15%">
-                                            <input type="number" name="quantite[{{$loop->index}}]" value="{{ old('quantite', $item->quantite ) }}" class="form-control quantite" id="quantite"/>
+                                            <input type="number" name="quantite[{{$loop->index}}]" value="{{ old('quantite', $item->quantite ) }}" class="form-control quantite" id="quantite" required/>
+                                            @error('quantite')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                                         </td>
                                         <td style="width:15%">
                                             <input type="number" name="prix_unitaire[{{$loop->index}}]" value="{{ old('prix_unitaire', $item->prix_unitaire ) }}"
-                                                class="form-control prix_unitaire" id="prix_unitaire"/>
+                                                class="form-control prix_unitaire" id="prix_unitaire" required/>
+                                                @error('prix_unitaire')<span class="help-block text-danger">{{ $message }}</span>@enderror
+
                                         </td>
                                         <td style="width:15%">
                                             <input type="number" name="prix_total[{{$loop->index}}]" value="{{ old('prix_total', $item->prix_total ) }}" class="form-control prix_total"
                                                 readonly id="prix_total"/>
+
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fa fa-times"></i></a>

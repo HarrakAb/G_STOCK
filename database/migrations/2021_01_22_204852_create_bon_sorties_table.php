@@ -19,8 +19,8 @@ class CreateBonSortiesTable extends Migration
             $table->date('bon_date')->nullable();
             $table->string('client_name' , 50);
             $table->string('client_address' , 50);
-            $table->string('client_phone' , 20);
-            $table->decimal('total',8,2)->default(0.00);
+            $table->string('client_phone' , 20)->nullable();
+            $table->double('total' , 12,2)->default(0.00);
             $table->string('created_by');
             $table->softDeletes();
             $table->timestamps();

@@ -15,11 +15,13 @@ class CreateEntreeDetailsTable extends Migration
     {
         Schema::create('entree_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bon_entrees_id')->references('id')->on('bon_entrees')->onDelete('cascade');
+            $table->foreignId('bon_entrees_id')->constrained('bon_entrees')->onDelete('cascade');
             $table->string('article');
-            $table->decimal('quantite');
-            $table->decimal('prix_unitaire' , 8,2);
-            $table->decimal('prix_total' , 8,2);
+            $table->string('description');
+            $table->bigInteger('quantite');
+            $table->bigInteger('total_quantite');
+            $table->double('prix_unitaire' , 12,2);
+            $table->double('prix_total' , 12,2);
             $table->timestamps();
         });
     }

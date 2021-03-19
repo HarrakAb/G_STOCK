@@ -27,11 +27,21 @@
     <div class="row">
         <div class="col-xl-12">
             <!-- notification of deleteing -->
-            @if (session()->has('success'))
+            @if (session()->has('delete'))
                 <script>
                     window.onload = function(){
                         notif({
-                            msg : "Suppréssion avec succés",
+                            msg : "تمت عملية الحذف بنجاح",
+                            type : "success"
+                        })
+                    }
+                </script>
+            @endif
+            @if (session()->has('archive'))
+                <script>
+                    window.onload = function(){
+                        notif({
+                            msg : "تمت عملية الأرشفة بنجاح'",
                             type : "success"
                         })
                     }
@@ -41,7 +51,7 @@
                 <script>
                     window.onload = function(){
                         notif({
-                            msg : "Operation Done Successfully ",
+                            msg : "تم الحفظ بنجاح",
                             type : "success"
                         })
                     }
@@ -51,18 +61,29 @@
                 <script>
                     window.onload = function(){
                         notif({
-                            msg : "Verfifié Votre Srock !!",
+                            msg : "المرجو التأكد من المخزن !!",
                             type : "success"
                         })
                     }
                 </script>
             @endif
+            @if (session()->has('edit'))
+                <script>
+                    window.onload = function(){
+                        notif({
+                            msg : "تم التعديل بنجاح",
+                            type : "success"
+                        })
+                    }
+                </script>
+            @endif
+   
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    {{-- @can('add invoice') --}}
+                    @can('ajouter bon')
                     <a href="{{route('bonEntrees.create')}}" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
                             class="fas fa-plus"></i>&nbsp; إظافة فاتورة</a>
-                    {{-- @endcan --}}
+                    @endcan
                     {{-- @can('export EXCEL') --}}
                     {{-- <a href="export_invoices" class="modal-effect btn btn-sm btn-success" style="color:white"><i
                         class="fas fa-file-download"></i>&nbsp; Export Excel 
@@ -108,28 +129,28 @@
 												<button aria-expanded="false" aria-haspopup="true" class="btn btn-sm btn-primary"
 												data-toggle="dropdown" id="dropdownMenuButton" type="button">قائمة<i class="fas fa-caret-down ml-1"></i></button>
 												<div  class="dropdown-menu tx-md-10">
-                                                    {{-- @can('modifie bon') --}}
+                                                    {{-- @can('modifie bon')
 													<a class="dropdown-item text-success btn-sm" 
                                                         href="{{route('bonEntrees.edit',$bonEntree->id)}}">تعديل</a>
-                                                    {{-- @endcan --}}
-                                                    {{-- @can('supprime bon') --}}
+                                                    @endcan --}}
+                                                    @can('supprime bon')
                                                     <a class="dropdown-item text-info btn-sm"
                                                         data-bon_id="{{$bonEntree->id}}"
                                                         data-toggle="modal"
                                                         data-target="#archive_bon"
                                                         href="#">أرشفة</a>
-                                                    {{-- @endcan --}}
-                                                    {{-- @can('archive bon') --}}
+                                                    @endcan
+                                                    @can('archive bon')
                                                     <a class="dropdown-item text-danger btn-sm"
                                                         data-bon_id="{{ $bonEntree->id }}"
                                                         data-toggle="modal"
                                                         data-target="#delete_bon"
                                                         href="#">حذف</a>
-                                                    {{-- @endcan --}}
-                                                    {{-- @can('print bon') --}}
+                                                    @endcan
+                                                    @can('print bon')
                                                     <a class="dropdown-item text-primary btn-sm" 
                                                         href="{{route('print',$bonEntree->id)}}">طباعة</a>
-                                                    {{-- @endcan --}}
+                                                    @endcan
 												</div>
 											</div>
 										</td>                               
@@ -155,7 +176,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('bonSorties.destroy',"test")}}" method="post">
+            <form action="{{route('bonEntrees.destroy',"test")}}" method="post">
                 @method('DELETE')
                 {{ csrf_field() }}
                 <div class="modal-body">
@@ -163,7 +184,7 @@
                     <h6 style="color:red"> هل انت متاكد من عملية حذف الفاتورة ؟</h6>
                     </p>
                     
-                    <input type="text" name="bon_id" id="bon_id" value="">
+                    <input type="hidden" name="bon_id" id="bon_id" value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">الغاء</button>
@@ -185,15 +206,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{route('bonSorties.destroy',"test")}}" method="post">
+            <form action="{{route('bonEntrees.destroy',"test")}}" method="post">
                 @method('DELETE')
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <p class="text-center">
                     <h6 style="color:red">هل انت متاكد من عملية أرشفة الفاتورة ؟</h6>
                     </p>
-                    <input type="text" name="page_id" id="page_id" value="2">
-                    <input type="text" name="bon_id" id="bon_id" value="">
+                    <input type="hidden" name="page_id" id="page_id" value="2">
+                    <input type="hidden" name="bon_id" id="bon_id" value="">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">الغاء</button>
