@@ -55,14 +55,14 @@
                             <h1 class="mt-1">Bon De Commande / الطلبات</h1>
                         </div><!-- invoice-header -->
                         @foreach ($clients as $client)
-                            <p>الزبون : {{$client->client_name}}</p>                       
+                            <h5 class="font-weight-bold mt-3">الزبون : {{$client->client}}</h5>                       
                         @endforeach
                         <div class="table-responsive mg-t-40">
                             <table class="table table-invoice text-md-nowrap mb-0">
                                 <thead class="bord">
                                     <tr style="background-color:rgb(238, 237, 237);">
-                                        <th class="tx-center bord"> المنتوج</th>
-                                        <th class="tx-center bord"> الوصف</th>
+                                        <th class="tx-center bord">المنتوج</th>
+                                        <th class="tx-center bord">ثمن الوحدة</th>
                                         <th class="tx-center bord">الوحدة / KG/Unité</th>
                                         <th class="tx-center bord">الكمية</th>
                                         <th class="tx-center bord"></th>
@@ -72,7 +72,7 @@
                                     @foreach ($bonCommandes->bons as $item)
                                         <tr >
                                             <td class="tx-center bor">{{ $item->article }}</td>
-                                            <td class="tx-center bor">{{ $item->description }}</td>
+                                            <td class="tx-center bor">{{ number_format($item->prix_unitaire,2) }}</td>
                                             <td class="tx-center bor">{{ $item->unite_mesure }}</td>
                                             <td class="tx-center bor">{{ $item->quantite }}</td>
                                             <td class="tx-center bor"><input type="checkbox"/></td>

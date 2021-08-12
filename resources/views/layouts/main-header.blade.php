@@ -70,7 +70,7 @@
 										@endforeach
 									</a>
 
-								<div class="dropdown-menu">
+								<div class="dropdown-menu" style="overflow:scroll !important;height:400px">
 									<div class="menu-header-content bg-primary text-right">
 										<div class="d-flex">
 											<h6 class="dropdown-title mb-1 tx-15 text-white font-weight-semibold">Notifications</h6>
@@ -84,6 +84,11 @@
 													<a class="d-flex p-3 border-bottom" href="{{ url('commandeDetail') }}/{{ $notification->data['commande'] }}">												
 															<i style="margin-top: -4%;" class="fas fa-envelope-open-text mb-2"></i>
 															تفاصيل الطلب
+															@if ( isset($notification->data['client_name']))
+																<span style="text-decoration: none;font-size:15px;color:black" class="mr-4">
+																	{{ $notification->data['client_name']}} 
+																</span>		
+															@endif
 													</a>
 												</div>
 											@endif
@@ -100,11 +105,11 @@
 								<a class="new nav-link full-screen-link" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg></a>
 							</div>
 							<div class="dropdown main-profile-menu nav nav-item nav-link">
-								<a class="profile-user d-flex" href=""><img alt="" src="{{URL::asset('assets/img/faces/6.jpg')}}"></a>
+								<a class="profile-user d-flex" href=""><img alt="" src="{{URL::asset('assets/img/faces/loggo.png')}}"></a>
 								<div class="dropdown-menu">
 									<div class="main-header-profile bg-primary p-3">
 										<div class="d-flex wd-100p">
-											<div class="main-img-user"><img alt="" src="{{URL::asset('assets/img/faces/6.jpg')}}" class=""></div>
+											<div class="main-img-user"><img alt="" src="{{URL::asset('assets/img/faces/loggo.png')}}" class=""></div>
 											@auth
 											<div class="mr-3 my-auto">
 												<h6>{{Auth::user()->name}}</h6><span>{{Auth::user()->email}}</span>
@@ -136,3 +141,4 @@
 				</div>
 			</div>
 <!-- /main-header -->
+

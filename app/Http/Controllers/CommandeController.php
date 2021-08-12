@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\DB;
 
 class CommandeController extends Controller
 {
+
+    // function __construct()
+    // {
+    //     $this->middleware('permission:voir commande', ['only' => ['index' , 'show']]);
+    //     $this->middleware('permission:add commande', ['only' => ['create', 'store' , 'getDetail']]);
+    //     $this->middleware('permission:delete commande', ['only' => ['destroy']]);
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -45,7 +52,7 @@ class CommandeController extends Controller
         $bon_number = $bc_number;
         $articles = Article::all();
         $clients = Client::all();
-        return view('commande.create' , compact('articles', 'clients' ,'bon_number'));
+        return view('commande.sauv' , compact('articles', 'clients' ,'bon_number'));
     }
 
     /**
@@ -82,7 +89,7 @@ class CommandeController extends Controller
         //$data['bon_number'] = $request->bon_number;
         //$data['bon_date'] = $request->bon_date;
         $data['client_name'] = $request->client_name;
-       // $data['client_credit'] = $request->client_credit;
+        $data['client'] = $request->client;
         $data['created_by'] = Auth::user()->name;
 
 
@@ -93,7 +100,8 @@ class CommandeController extends Controller
         for ($i = 0; $i < count($request->article); $i++) {
 
                 $details_list[$i]['article'] = $request->article[$i];
-                $details_list[$i]['description'] = $request->description[$i];
+                //$details_list[$i]['description'] = $request->description[$i];
+                $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
                 $details_list[$i]['unite_mesure'] = $request->unite_mesure[$i];
                 $details_list[$i]['quantite'] = $request->quantite[$i];
 
@@ -102,13 +110,11 @@ class CommandeController extends Controller
         $details = $bonCommande->bons()->createMany($details_list);
         
         $user = User::get();
-        $user = User::find(Auth::user()->id);
 
-        $commande = Commande::latest()->first()->id;
-        //$commande= Commande::where('bon_number', $request->article)->first();
-        //$commande = Commande::where('id', $request->id)->get();
-        //event(new CommandeNotif($data));
+        $client = $request->client;
+        $commande = [ Commande::latest()->first()->id , $client ];
         Notification::send($user ,new CommandeNotif($commande));
+      
 
         session()->flash('Add', 'تم الحفظ بنجاح');
         return redirect()->back();
@@ -122,9 +128,14 @@ class CommandeController extends Controller
      */
     public function show($id)
     {
-        $bonCommandes = Commande::findOrFail($id);
-        $clients = Commande::where('id' ,$id)->get();
-        return view('commande.show' , compact('bonCommandes','clients'));
+
+           $notification = auth()->user()->unreadNotifications->where("data['commande']", $id)->first()->update(['read_at' => now()]);
+           // return redirect($notification->data['link']);
+           $bonCommandes = Commande::findOrFail($id);
+           $clients = Commande::where('id' ,$id)->get();
+           return view('commande.show' , compact('bonCommandes','clients'));
+        
+
     }
     public function getDetail($id)
     {
@@ -162,9 +173,13 @@ class CommandeController extends Controller
      * @param  \App\Models\Commande  $commande
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Commande $commande)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->bon_id;
+        $commande = Commande::find($id);
+        $commande->delete();
+        session()->flash('delete', 'تمت عملية الحذف بنجاح');
+        return redirect('/commande');
     }
 
     public function MarkAsRead(){

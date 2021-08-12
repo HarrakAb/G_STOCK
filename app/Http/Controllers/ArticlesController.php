@@ -10,6 +10,7 @@ use App\Models\EntreeDetail;
 use App\Models\SortieDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
 
@@ -19,7 +20,7 @@ class ArticlesController extends Controller
 
     // function __construct()
     // {
-    //     $this->middleware('permission:view role', ['only' => ['index', 'store']]);
+    //     $this->middleware('permission:articles', ['only' => ['index']]);
     //     $this->middleware('permission:add article', ['only' => ['create', 'store']]);
     //     $this->middleware('permission:edit article', ['only' => ['edit', 'update']]);
     //     $this->middleware('permission:delete article', ['only' => ['destroy']]);
@@ -59,7 +60,7 @@ class ArticlesController extends Controller
             $this->validate($request,[
                 'reference' => 'required|unique:articles|max:255',
                 'unite_mesure' => 'required',
-                'description' => 'required',
+                'description' => 'required|unique:articles|max:255',
                 'categorie_id' => 'required'
             ]);
 
@@ -73,7 +74,7 @@ class ArticlesController extends Controller
         }
 
         catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'لا يمكن إدخال هذا المنتوج مرتين !!']);
         }
     }
 
@@ -155,19 +156,14 @@ class ArticlesController extends Controller
         $entrees = EntreeDetail::where('article',$reference)->sum('quantite');
         $article = Article::where('reference',$reference)->first();
         $sorties  = SortieDetail::where('article',$reference)->sum('quantite');
-       // $attachments  = Invoices_Attachment::where('invoice_id',$id)->get();
 
         return view('articles.details',compact('entrees','sorties','article'));
     }
 
     public function details()
     {
-        //$entrees = EntreeDetail::where('article',$reference)->sum('quantite');
         $articles = Article::where('stock' ,'<',10)->get();
-        //$sorties  = SortieDetail::where('article',$reference)->sum('quantite');
-       // $attachments  = Invoices_Attachment::where('invoice_id',$id)->get();
-
-        return view('articles.details2',compact('articles'));
+        return view('articles.stockAlert',compact('articles'));
     }
 
     public function MarkAsRead_all(){
@@ -185,5 +181,29 @@ class ArticlesController extends Controller
 
         $articles = Article::where('stock' ,'>', 1)->get();
         return view('stock.details',compact('articles'));
+    }
+
+    public function getStockValue(){
+
+        $articles = Article::where('stock' ,'>', 1)->get();
+        return view('stock.value',compact('articles'));
+    }
+
+    public function getAvg($article) {
+        $art = EntreeDetail::where('article' , $article)->first();
+        $avg = EntreeDetail::whereBetween($art , ['2021-05-15' , now()])->avg('prix_unitaire');
+        // dd($avg);
+        // $avg = EntreeDetail::where('article' , $article)->avg('prix_unitaire');
+        return $avg;
+    }
+
+    public function searchArticle($search)
+    {
+        // $results = DB::table("articles")->where("description", 'LIKE', '%' . $search . '%')->get();
+        $results = Article::where("description", 'LIKE', '%'.$search.'%')->get();
+        $html = view('searchProduct.search')->with(compact('results'))->render();
+        // return $results;
+        // return true;
+        return response()->json(['success' => true, 'html' => $html]);
     }
 }

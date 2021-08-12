@@ -26,4 +26,8 @@ class Client extends Model
     {
       return $this->belongsTo(Client::class,'id','address');
     }
+
+    public function credit(){
+        return $this->hasOne(Credit::class,'credit_id' , 'id');
+    }
 }

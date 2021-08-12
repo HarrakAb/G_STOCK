@@ -7,6 +7,12 @@
 <!--- Select2 css -->
 <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
 
+<style>
+     .ft{
+            font-size: 16px;
+            font-weight: bold;
+        }
+</style>
 @endsection
 @section('page-header')
 	<!-- breadcrumb -->
@@ -38,6 +44,7 @@
 					@endif
                     <div class="col-xl-12">
 						<div class="card">
+							@can('add article')
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
@@ -45,6 +52,7 @@
                                     </div>
 								</div>
 							</div>
+							@endcan
 							<div class="card-body">
 								<div class="table-responsive">
 									<table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center">
@@ -59,7 +67,7 @@
 										</thead>
 										<tbody>
 											@foreach ($articles as $article)	
-												<tr>
+												<tr class="ft">
 													<td>{{$article->reference}}</td>
 													<td>{{$article->description}}</td>
 													<td>{{$article->categorie->categorie_name}}</td>
@@ -68,7 +76,7 @@
 													</td>
 													<td>
 													
-                                                    @can('modifie article')
+                                                    @can('edit article')
 														<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 														data-article_id="{{$article->id}}" data-reference="{{$article->reference}}"
 														data-categorie_name="{{$article->categorie->categorie_name}}"
@@ -76,7 +84,7 @@
 														data-description="{{$article->description}}" data-toggle="modal" href="#exampleModal2"
 														title="Edit"><i class="las la-pen"></i></a>
 													@endcan
-													@can('supprime article')
+													@can('delete article')
 														<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 														 data-article_id="{{$article->id}}" data-reference="{{$article->reference}}"
 														 data-toggle="modal"
@@ -119,12 +127,14 @@
 									<div class="form-group">
 										<select name="unite_mesure" id="unite_mesure" class="form-control" type="text" required>
 											<option value="" selected disabled>الوحدة</option>	
-											<option value="5">5 KG</option>			
+											<option value="1">1 KG</option>
+											<option value="2">2 KG</option>
+											<option value="5">5 KG</option>
 											<option value="10">10 KG</option>			
 											<option value="15">15 KG </option>			
 											<option value="20">20 KG </option>			
 											<option value="25">25 KG </option>			
-											<option value="1">Unité</option>			
+											<option value="1">Piéce</option>			
 										</select>
 								   </div>
                                     <div class="form-group">

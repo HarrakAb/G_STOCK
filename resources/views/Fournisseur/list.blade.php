@@ -47,10 +47,9 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-striped mg-b-0 text-md-nowrap">
+									<table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center"> 
 										<thead>
 											<tr>
-												<th>#</th>
 												<th>الإسم الكامل</th>
 												<th>العنوان</th>
 												<th>الهاتف</th>
@@ -61,13 +60,12 @@
 										<tbody>
 											@foreach ($fournisseurs as $fournisseur)
 												<tr>
-													<th scope="row">{{$fournisseur->id}}</th>
 													<td>{{$fournisseur->full_name}}</td>
 													<td>{{$fournisseur->address}}</td>
 													<td>{{$fournisseur->phone}}</td>
 													<td>{{$fournisseur->email}}</td>
 													<td>
-													@can('modifie categorie')
+													@can('edit fournisseur')
 														<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
 														   data-id="{{ $fournisseur->id }}" 
 														   data-full_name="{{ $fournisseur->full_name }}"
@@ -77,7 +75,7 @@
 														   data-toggle="modal" href="#exampleModal2"
 														   title="Edit"><i class="las la-pen"></i></a>
 													@endcan
-													@can('supprime categorie')
+													@can('delete fournisseur')
 														<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 														   data-id="{{ $fournisseur->id }}" data-full_name="{{ $fournisseur->full_name }}" data-toggle="modal"
 														   href="#modaldemo9" title="Delete"><i class="las la-trash"></i></a>
@@ -116,7 +114,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>البريد الإلكتروني</label>
-                                         <input name="email" class="form-control" type="text">
+                                         <input name="email" class="form-control" type="email">
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn ripple btn-primary" type="submit">حفظ</button>
@@ -159,7 +157,7 @@
                                     </div>
                                     <div class="form-group">
 										<label for="recipient-name" class="col-form-label">البريد الإلكتروني</label>
-										<input class="form-control" name="email" id="email" type="text">
+										<input class="form-control" name="email" id="email" type="email">
 									</div>
 									</div>
 									<div class="modal-footer">
@@ -203,6 +201,28 @@
 		<!-- main-content closed -->
 @endsection
 @section('js')
+
+<!-- Internal Data tables -->
+<script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/jszip.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/pdfmake.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/vfs_fonts.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+<!--Internal  Datatable js -->
+<script src="{{ URL::asset('assets/js/table-data.js') }}"></script>
+
+
 <!--Internal  Datepicker js -->
 <script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
 <!-- Internal Select2 js-->

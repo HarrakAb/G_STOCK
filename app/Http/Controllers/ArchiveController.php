@@ -14,7 +14,7 @@ class ArchiveController extends Controller
      */
     public function index()
     {
-        $invoices = Invoice::onlyTrashed()->get();
+        //$invoices = Invoice::onlyTrashed()->get();
         return view('invoices.archive',compact('invoices'));
     }
 
@@ -71,7 +71,7 @@ class ArchiveController extends Controller
     public function update(Request $request)
     {
         $id = $request->invoice_id;
-        $restore = Invoice::withTrashed()->where('id',$id)->restore();
+        //$restore = Invoice::withTrashed()->where('id',$id)->restore();
         session()->has('success', 'restored Successfully');
         return redirect()->route('invoices.index');
     }
@@ -84,8 +84,8 @@ class ArchiveController extends Controller
      */
     public function destroy(Request $request)
     {
-        $invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->first();
-        $invoices->forceDelete();
+        //$invoices = Invoice::withTrashed()->where('id',$request->invoice_id)->first();
+        //$invoices->forceDelete();
         session()->has('success', 'Deleted Successfully');
         return redirect()->route('invoices.index');
     }

@@ -68,13 +68,14 @@
                             </div>
                             <div class="col">
                                 <label for="client_name" class="control-label">إسم المورّد</label>
-                                <select id="client_name" name="client_name" class="form-control custom_select client_name" required>
+                                {{-- <select id="client_name" name="client_name" class="form-control form-control-lg custom_select client_name" required>
                                     <option value="" selected disabled>إسم المورّد</option>
                                         @foreach ($fournisseurs as $fournisseur)
                                             <option value="{{ $fournisseur->full_name }}">
                                                 {{ $fournisseur->full_name }}</option>
                                         @endforeach
-                                </select>
+                                </select> --}}
+                                <livewire:get-fournisseur-name>
                                 {{-- <input type="text" class="form-control" name="client_name" title="entrée le nom de client"
                                         value="{{ old('client_name') }}"  required>
                                     @error('client_name')<span class="help-block text-danger">{{ $message }}</span>@enderror --}}
@@ -90,7 +91,7 @@
                                     <tr>
                                         <th class="border-bottom-0"></th>
                                         <th class="border-bottom-0">المنتوج</th>
-                                        <th class="border-bottom-0">الوصف</th>
+                                        <th class="border-bottom-0">الرمز</th>
                                         <th class="border-bottom-0">الوحدة</th>
                                         <th class="border-bottom-0">الكمية</th>
                                         <th class="border-bottom-0">إجمالي الكمية</th>
@@ -107,20 +108,21 @@
                                             1
                                         </td>
                                         <td style="width:15%"> 
-                                            <select id="article" name="article[]" class="form-control article" required>
+                                            {{-- <select id="article" name="description[]" class="form-control form-control-lg description" required>
                                                 <option value="" selected disabled>إختر المنتوج</option>
                                                 @foreach ($articles as $article)
-                                                    <option value="{{ $article->reference }}">
-                                                        {{ $article->reference }}</option>
+                                                    <option value="{{ $article->description }}">
+                                                        {{ $article->description }}</option>
                                                 @endforeach
-                                            </select>
-                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                            </select> --}}
+                                            @livewire('get-product-name')
+                                            @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
 
                                         </td>
                                         <td style="width:15%">
-                                            <input type="hidden" name="description_id" class="description_id"  id="description_id" value="1">
-                                            <input type="text" name="description[]" class="form-control description" id="description1" readonly required/>
-                                            @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                            <input type="hidden" name="article_id" class="description_id"  id="article_id" value="1">
+                                            <input type="text" name="article[]" class="form-control article" id="article1" readonly required/>
+                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
                                         </td>
                                         <td style="width:10%">
                                             <input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure1" readonly required/>
@@ -155,12 +157,15 @@
 
                         {{-- 4 --}}
 
-                        <div class="row">
-                            <div class="col-8"></div>
-                            <div class="col-4 float-right ">
-                                <label for="inputName" class="control-label"> المبلغ الإجمالي للفاتورة</label>
-                                <input type="text" class="form-control total" id="total" name="total" value="0.00" readonly>
+                        <div class="paid">                      
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-3 float-right ">
+                                    <label for="inputName" class="control-label"> المبلغ الإجمالي للفاتورة</label>
+                                    <input type="text" class="form-control total" id="total" name="total" value="0.00" readonly>
+                                </div>
                             </div>
+
                         </div>
 
                         <div class="d-flex justify-content-center mt-2">
@@ -219,18 +224,18 @@
             var categorie = $('.categorie').html();
             var numberOfRow = ($('.addMoreArticle tr').length - 0) + 1;
             var tr = '<tr><td class="no">' + numberOfRow + '</td>' +
-                '<td style="width:15%"><select id="article" class="form-control SelectBox article" name="article[]">' +
-                '<option value="" selected disabled>إختر المنتوج</option>' + 
-                ' @foreach ($articles as $article)' +
-                '  <option value="{{ $article->reference }}"> '+
-                ' {{ $article->reference }}</option> ' +
-                ' @endforeach '+
-                '</select></td>' +
-                '<td style="width:15%"><input type="hidden" name="description_id" class="description_id"  id="description_id" value="'+numberOfRow+'"><input type="text" data-description_id="'+numberOfRow+'" name="description[]" class="form-control description" id="description'+numberOfRow+'" readonly required/>@error("description")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
+                '<td style="width:15%"> '+
+                '<select id="descriptionS'+numberOfRow+'" name="descriptionn[]" class="form-control form-control-lg SelectBox description" >' +
+                '</select>'+ 
+                '<div style="position:relative">'+
+                '<input  class="form-control relative" type="text" id="ser" '+
+                'placeholder="search..." /></div>'+
+                '</td>' +
+                '<td style="width:15%"><input type="hidden" name="article_id" class="article_id"  id="article_id" value="'+numberOfRow+'"><input type="text" data-article_id="'+numberOfRow+'" name="article[]" class="form-control article" id="article'+numberOfRow+'" readonly required/>@error("article")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
                 '<td style="width:10%"><input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure'+numberOfRow+'" readonly required/></td>'+
                 '<td style="width:15%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/><input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="'+numberOfRow+'" required/></td>' +
                 '<td style="width:15%"><input type="number" value="0"  name="total_quantite[]" class="form-control total_quantite" id="total_quantite" readonly required/>@error("total_quantite")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
-                '<td style="width:15%"><input type="number" name="prix_unitaire[]" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
+                '<td style="width:15%"><input type="number" name="prix_unitaire[]" step="any" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
                 '<td style="width:15%"><input type="number" name="prix_total[]" class="form-control prix_total" value="0.00" id="prix_total" readonly/></td>' +
                 '<td><a href="#" class="btn btn-danger btn-sm delete"><i class="fa fa-times"></i></a></td>';
             $('.addMoreArticle').append(tr);
@@ -322,26 +327,72 @@
 
              ///////////  get Description and Unite_mesure of Product ////
 
-             $(document).on('change', 'select[name="article[]"]', function(){
+            //  $(document).on('change', 'select[name="descriptionn[]"]', function(){
 
+            //     let row = $(this).closest('tr');
+            //     let article_id = row.find('#article_id').val();
+            //     let unite_mesure_id = row.find('#unite_mesure_id').val();
+            //     var description = $(this).val();
+            //     var url = "{{ URL::to('article') }}/" + description;
+            //     //console.log(description_id);
+            //     $.ajax({
+            //         url: url,
+            //         type: 'get',
+            //         dataType: 'json',
+            //         success: function(response){
+            //             if(response != null){
+            //                 $('#article'+article_id).val(response.reference);
+            //                 $('#unite_mesure'+unite_mesure_id).val(response.unite_mesure);
+            //             }
+            //         }
+            //     });
+            // });
+            //////////////
+
+            $(document).on('change', 'select[name="descriptionn[]"]', function(){
                 let row = $(this).closest('tr');
-                let description_id = row.find('#description_id').val();
+                let inStock = " في المخزن "; 
+                let article_id = row.find('#article_id').val();
+                let stock_id = row.find('#stock_id').val();
                 let unite_mesure_id = row.find('#unite_mesure_id').val();
-                var reference = $(this).val();
-                var url = "{{ URL::to('article') }}/" + reference;
-                //console.log(description_id);
+                var id = $(this).val();
+                var url = "{{ URL::to('searticle') }}/" + id;
+                console.log(id);
                 $.ajax({
                     url: url,
                     type: 'get',
                     dataType: 'json',
                     success: function(response){
                         if(response != null){
-                            $('#description'+description_id).val(response.description);
+                            $('#article'+article_id).val(response.reference);
+                            $('#stock'+stock_id).val(response.stock+' '+inStock );
                             $('#unite_mesure'+unite_mesure_id).val(response.unite_mesure);
                         }
                     }
                 });
             });
 
+        // test search product
+        $(document).on('change', '#ser', function(){
+            var search = $(this).val();
+            var url = "{{ URL::to('searcharticle') }}/" + search;
+            $.ajax({
+                url: url,              
+                method: 'GET',
+                dataType: 'json',
+                success: function(response){
+                    if(response != null){
+                        var html = '<option value="" selected disabled>إختر المنتوج</option>';
+                        var numberO= ($('.addMoreArticle tr').length - 0);
+                        $.each(response, function(key, value) {
+                            html += "<option value="+value.id+">" + value.description + "</option>";
+                            // console.log(value.id)
+                        });
+                        $('#descriptionS'+numberO).html(html);
+                    }
+                }
+            });
+            // }
+        });
     </script>
 @endsection

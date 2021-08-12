@@ -11,6 +11,12 @@
     <!--Internal  TelephoneInput css-->
     <link rel="stylesheet" href="{{ URL::asset('assets/plugins/telephoneinput/telephoneinput-rtl.css') }}">
 
+<style>
+     .ft{
+            font-size: 20px;
+            font-weight: bold;
+        }
+</style>
 @endsection
 @section('title')
     إظافة فاتورة
@@ -73,15 +79,24 @@
                                     @error('bon_date')<span class="help-block text-danger">{{ $message }}</span>@enderror
 
                             </div>
+                           
                             <div class="col">
                                 <label>إسم الزبون</label>
-                                <select id="client_name" name="client_name" class="form-control client_name" required>
+                                
+                                {{-- <select id="client_name" name="client_name" class="form-control form-control-lg client_name" required>
+                                    <input type="text" class="form-control" name="client_name" placeholder="search">
                                     <option value="" selected disabled>إسم الزبون</option>
-                                        @foreach ($clients as $client)
-                                            <option value="{{ $client->full_name }}">
-                                                {{ $client->full_name }}</option>
+                                    @foreach ($clients as $client) 
+                                    <option value="{{ $client->full_name }}">
+                                        {{ $client->full_name }}</option>
                                         @endforeach
-                                </select>
+                                </select>  --}}
+                                    <livewire:get-client-name>
+                            </div>
+
+                            <div>
+                                <input  id="code" class="form-control"  name="code_client" type="hidden" required readonly> 
+                                @error('client_address')<span class="help-block text-danger">{{ $message }}</span>@enderror     
                             </div>
                         
                             <div class="col-3" >
@@ -98,6 +113,7 @@
                             </div>
                         </div>
                         </br>
+                        
                         {{-- 2 --}}
                         <div class="table-responsive">
                             <table id="example1" class="table table-bordred key-buttons text-md-nowrap"
@@ -106,7 +122,7 @@
                                     <tr>
                                         <th class="border-bottom-0"></th>
                                         <th class="border-bottom-0">المنتوج</th>
-                                        <th class="border-bottom-0">الوصف</th>
+                                        <th class="border-bottom-0">المتوفر</th>
                                         <th class="border-bottom-0">الوحدة</th>
                                         <th class="border-bottom-0">الكمية</th>
                                         <th class="border-bottom-0">إجمالي الكمية</th>
@@ -123,20 +139,34 @@
                                         <td>
                                             1
                                         </td>
-                                        <td style="width:15%">
-                                            <select id="article" name="article[]" class="form-control article" required>
+                                        <td style="width:15%">                                        
+                                                {{-- <livewire:get-product-name> --}}
+                                                @livewire('get-product-name')
+
+                                                {{-- <div id="newSearch"></div>
+                                                <select id="descriptionS1" class="form-control form-control-lg SelectBox description" name="description[]"> 
+                                                    <option value="" selected disabled>إختر المنتوج</option>  
+                                                </select>
+                                                <div style="position:relative">
+                                                    <input  class="form-control relative" type="text" id="ser" 
+                                                    placeholder="search..." />
+                                                </div> --}}
+
+                                            {{-- <select style="overflow:scroll !important;" id="description" name="description[]" class="form-control form-control-lg description" required>
                                                 <option value="" selected disabled>إختر المنتوج</option>
                                                 @foreach ($articles as $article)
-                                                    <option value="{{ $article->reference }}">
-                                                        {{ $article->reference }}</option>
+                                                    <option value="{{ $article->description }}">
+                                                        {{ $article->description }}</option>
                                                 @endforeach
-                                            </select>
-                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                            </select> --}}
+                                            @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
                                         </td>
                                         <td style="width:15%">
-                                            <input type="hidden" name="description_id" class="description_id"  id="description_id" value="1">
-                                            <input type="text" name="description[]" class="form-control description" id="description1" readonly required/>
-                                            @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
+                                            <input type="hidden" name="article_id" class="article_id"  id="article_id" value="1">
+                                            <input type="hidden" name="article[]" class="form-control article" id="article1" readonly required/>
+                                            <input type="hidden" name="stock_id" class="stock_id"  id="stock_id" value="1">
+                                            <input type="text" name="instock[]" class="form-control stock" id="stock1" readonly required/>
+                                            @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
                                         </td>
                                         <td style="width: 10%">
                                             <input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure1" readonly required/>
@@ -170,15 +200,27 @@
                         </div>
 
                         {{-- 4 --}}
-
-                        <div class="row">
-                            <div class="col-8"></div>
-                            <div class="col-4 float-right ">
-                                <label for="inputName" class="control-label"> المبلغ الإجمالي للفاتورة</label>
-                                <input type="text" class="form-control total" id="total" name="total" value="0.00" readonly>
+                        
+                        <div class="paid">                      
+                            <div class="row">
+                                <div class="col-9"></div>
+                                <div class="col-3 float-right ">
+                                    <label for="inputName" class="control-label"> المبلغ الإجمالي للفاتورة</label>
+                                    <input type="text" class="form-control total" id="total" name="total" value="0.00" readonly>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-6"></div>
+                                <div class="col-3 float-right ">
+                                    <label for="inputName" class="control-label text-success"> الدفع</label>
+                                    <input type="number" class="form-control" step="any" id="paid" name="paid" placeholder="الدفع">
+                                </div>
+                                <div class="col-3 float-right ">
+                                    <label for="inputName" class="control-label text-danger">الباقي</label>
+                                    <input type="number" class="form-control" step="any" id="rest" name="rest" placeholder="الباقي">
+                                </div>
                             </div>
                         </div>
-
                         <div class="d-flex justify-content-center mt-2">
                             <button type="submit" class="btn btn-primary">حفظ</button>
                         </div>
@@ -234,30 +276,32 @@
         $('.addRow').on('click', function() {
             var categorie = $('.categorie').html();
             var numberOfRow = ($('.addMoreArticle tr').length - 0) + 1;
+            var numberOfR= ($('.addMoreArticle tr').length - 0) + 1;
+            // let numberOfR = 2;
             var tr = '<tr><td class="no">' + numberOfRow + '</td>' +
-                '<td style="width:15%"><select id="article" class="form-control SelectBox article" name="article[]">' +
-                '<option value="" selected disabled>إختر المنتوج</option>' + 
-                ' @foreach ($articles as $article)' +
-                '  <option value="{{ $article->reference }}"> '+
-                ' {{ $article->reference }}</option> ' +
-                ' @endforeach '+
-                '</select></td>' +
-                '<td style="width:15%"><input type="hidden" name="description_id" class="description_id"  id="description_id" value="'+numberOfRow+'"><input type="text" data-description_id="'+numberOfRow+'" name="description[]" class="form-control description" id="description'+numberOfRow+'" readonly required/>@error("description")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
+                '<td style="width:15%"> '+
+                '<select id="descriptionS'+numberOfRow+'" name="descriptionn[]" class="form-control form-control-lg SelectBox description" >' +
+                '</select>'+ 
+                '<div style="position:relative">'+
+                '<input  class="form-control relative" type="text" id="ser" '+
+                'placeholder="search..." /></div>'+
+                '</td>' +
+                '<td style="width:15%"><input type="hidden" name="article_id" class="article_id"  id="article_id" value="'+numberOfRow+'"><input type="hidden" data-article_id="'+numberOfRow+'" name="article[]" class="form-control article" id="article'+numberOfRow+'" readonly required/>'+
+                ' <input type="hidden" name="stock_id" class="stock_id"  id="stock_id" value="'+numberOfRow+'"><input type="text" name="instock[]" ata-stock_id="'+numberOfRow+'" class="form-control stock" id="stock'+numberOfRow+'" readonly required/>'+
+                '@error("article")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
                 '<td style="width:10%"><input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure'+numberOfRow+'" readonly required/></td>'+
-                '<td style="width:10%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/><input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="'+numberOfRow+'" required/></td>' +
+                '<td style="width:15%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/><input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="'+numberOfRow+'" required/></td>' +
                 '<td style="width:15%"><input type="number" value="0"  name="total_quantite[]" class="form-control total_quantite" id="total_quantite" readonly required/>@error("total_quantite")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
-                '<td style="width:15%"><input type="number" name="prix_unitaire[]" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
+                '<td style="width:15%"><input type="number" name="prix_unitaire[]" step="any" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
                 '<td style="width:15%"><input type="number" name="prix_total[]" class="form-control prix_total" value="0.00" id="prix_total" readonly/></td>' +
                 '<td><a href="#" class="btn btn-danger btn-sm delete"><i class="fa fa-times"></i></a></td>';
             $('.addMoreArticle').append(tr);
         });
 
-        // end add Row function //
-
-        // delete function //
+        //// delete row function
 
         $('.addMoreArticle').delegate('.delete', 'click', function() {
-            $(this).parent().remove();
+            $(this).parent().parent().remove();
         });
 
         //  end delete function //
@@ -276,23 +320,18 @@
         };
         //subTotal
         $(document).ready(function(){
-
             $('#bon').on('keyup blur', '.quantite, .prix_unitaire', function(){
                 let row = $(this).closest('tr');
                 let quantity = row.find('.quantite').val() || 0;
                 let unit_price = row.find('.prix_unitaire').val() || 0;
-
                 row.find('.prix_total').val((quantity * unit_price).toFixed(2));
                 TotalAmount();
             });
-
-
         })
 
 
         // end Total and sub Total //
         $(document).ready(function(){
-
             $('#bon').on('keyup blur', '.quantite', function(){
                 let row = $(this).closest('tr');
                 let quantity = row.find('.quantite').val() || 0;
@@ -301,8 +340,16 @@
                 row.find('.total_quantite').val((quantity * unite_mesure));
                 TotalAmount();
             });
+        });
 
-
+        //paid and rest payment
+        $(document).ready(function(){
+            $('#paid').on('keyup blur', function(){
+                let row = $(this).closest('.paid');
+                let total = row.find('#total').val() || 0;
+                let paid = row.find('#paid').val() || 0;
+                row.find('#rest').val((total - paid).toFixed(2));
+            });
         });
   
         // datePicker
@@ -315,8 +362,6 @@
         $('select[name="client_name"]').change(function(){
             var name = $(this).val();
             var url = "{{ URL::to('client') }}/" + name;
-            //url = url.replace(':id', id);
- 
             $.ajax({
                 url: url,
                 type: 'get',
@@ -325,6 +370,7 @@
                     if(response != null){
                         $('#address').val(response.address);
                         $('#phone').val(response.phone);
+                        $('#code').val(response.code_client);
                     }
                 }
             });
@@ -332,45 +378,78 @@
 
      ///////////  get Description of Product ////
 
-     $(document).on('change', 'select[name="article[]"]', function(){
+     $(document).on('change', 'select[name="description[]"]', function(){
 
         let row = $(this).closest('tr');
-        let description_id = row.find('#description_id').val();
+        let inStock = " في المخزن "; 
+        let article_id = row.find('#article_id').val();
+        let stock_id = row.find('#stock_id').val();
         let unite_mesure_id = row.find('#unite_mesure_id').val();
-        var reference = $(this).val();
-        var url = "{{ URL::to('article') }}/" + reference;
-        //console.log(description_id);
+        var description = $(this).val();
+        var url = "{{ URL::to('article') }}/" + description;
+        // console.log(description);
         $.ajax({
             url: url,
             type: 'get',
             dataType: 'json',
             success: function(response){
                 if(response != null){
-                    $('#description'+description_id).val(response.description);
+                    $('#article'+article_id).val(response.reference);
+                    $('#stock'+stock_id).val(response.stock+' '+inStock );
                     $('#unite_mesure'+unite_mesure_id).val(response.unite_mesure);
                 }
             }
         });
     });
 
-        // $(document).on('change', '.article', function(){
+    $(document).on('change', 'select[name="descriptionn[]"]', function(){
 
-        //     let row = $(this).closest('tr');
-        //     let description_id = row.find('#description_id').val();
-        //     var reference = $(this).val();
-        //     var url = "{{ URL::to('article') }}/" + reference;
-        //     //console.log(description_id);
-        //     $.ajax({
-        //         url: url,
-        //         type: 'get',
-        //         dataType: 'json',
-        //         success: function(response){
-        //             if(response != null){
-        //                 $('#description'+description_id).val(response.description);
-        //             }
-        //         }
-        //     });
-        // });
+        let row = $(this).closest('tr');
+        let inStock = " في المخزن "; 
+        let article_id = row.find('#article_id').val();
+        let stock_id = row.find('#stock_id').val();
+        let unite_mesure_id = row.find('#unite_mesure_id').val();
+        var id = $(this).val();
+        var url = "{{ URL::to('searticle') }}/" + id;
+        console.log(id);
+        $.ajax({
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function(response){
+                if(response != null){
+                    $('#article'+article_id).val(response.reference);
+                    $('#stock'+stock_id).val(response.stock+' '+inStock );
+                    $('#unite_mesure'+unite_mesure_id).val(response.unite_mesure);
+                }
+            }
+        });
+    });
+
+    // test search product
+        $(document).on('change', '#ser', function(){
+            var search = $(this).val();
+            var url = "{{ URL::to('searcharticle') }}/" + search;
+            $.ajax({
+                url: url,              
+                method: 'GET',
+                dataType: 'json',
+                success: function(response){
+                    if(response != null){
+                        var html = '<option value="" selected disabled>إختر المنتوج</option>';
+                        var numberO= ($('.addMoreArticle tr').length - 0);
+                        $.each(response, function(key, value) {
+                            html += "<option value="+value.id+">" + value.description + "</option>";
+                            // console.log(value.id)
+                        });
+                        $('#descriptionS'+numberO).html(html);
+                    }
+                }
+            });
+            // }
+        });
+        ///////////
+    // });
 
     </script>
 @endsection

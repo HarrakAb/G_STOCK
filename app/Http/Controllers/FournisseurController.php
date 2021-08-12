@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\DB;
 
 class FournisseurController extends Controller
 {
+
+    // function __construct()
+    // {
+    //     $this->middleware('permission:fournisseurs list', ['only' => ['index']]);
+    //     $this->middleware('permission:add fournisseur', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit fournisseur', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:delete fournisseur', ['only' => ['destroy']]);
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +47,7 @@ class FournisseurController extends Controller
      */
     public function store(Request $request , fournisseur $fournisseur)
     {
-        try {
+        //try {
             $this->validate($request,[
                 'full_name' => 'required|unique:fournisseurs|max:50',
                 'address' => 'required'
@@ -52,11 +61,11 @@ class FournisseurController extends Controller
             $fournisseur->save();
             session()->flash('success', 'تم الحفظ بنجاح');
             return redirect('/fournisseurs');
-        }
+        // }
 
-        catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
+        // catch (\Exception $e){
+        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        // }
     }
 
     /**
@@ -88,16 +97,16 @@ class FournisseurController extends Controller
      * @param  \App\Models\Fournisseur  $fournisseur
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, fournisseur $fournisseur)
+    public function update(Request $request , $id)
     {
 
-        try {
+       // try {
 
             $id = $request->id;
-            $this->validate($request,[
-                'full_name' => 'required|unique:fournisseurs|max:50'.$id,
-                'address' => 'required'
-            ]);
+            // $this->validate($request,[
+            //     'full_name' => 'required|unique:fournisseurs|max:50'.$id,
+            //     'address' => 'required'
+            // ]);
 
             $fournisseur = Fournisseur::find($id);
             $fournisseur->full_name = $request->input('full_name');
@@ -108,11 +117,11 @@ class FournisseurController extends Controller
 
             session()->flash('success','تم التعديل بنجاح');
             return redirect('/fournisseurs');
-        }
+        // }
 
-        catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
+        // catch (\Exception $e){
+        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        // }
     }
 
     /**

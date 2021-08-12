@@ -20,6 +20,7 @@ class CreateClientsTable extends Migration
             $table->string('phone', 15)->nullable();
             $table->string('address',55);
             $table->string('code_client',30)->nullable();
+            //$table->foreignId('credit_id')->constrained('credits');
             $table->timestamps();
         });
     }

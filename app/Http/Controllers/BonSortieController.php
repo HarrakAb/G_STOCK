@@ -14,9 +14,22 @@ use Illuminate\Support\Facades\Notification;
 use App\Notifications\CheckStock;
 use App\Helpers\Helper;
 use App\Models\Client;
+use App\Models\Credit;
+use App\Models\EntreeDetail;
 
 class BonSortieController extends Controller
 {
+
+    // function __construct()
+    // {
+    //     $this->middleware('permission:bon sortie', ['only' => ['index']]);
+    //     $this->middleware('permission:add bon', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit bon', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:delete bon', ['only' => ['destroy']]);
+    //     $this->middleware('permission:stock etat', ['only' => ['getStock']]);
+    //     //$this->middleware('permission:add commande', ['only' => ['getDescription']]);
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +37,7 @@ class BonSortieController extends Controller
      */
     public function index()
     {
-        $bonSorties = BonSortie::orderBy('id' , 'desc')->paginate(5);
+        $bonSorties = BonSortie::orderBy('created_at' , 'desc')->get();
         return view('bonSorties.listBon',compact('bonSorties'));
     }
 
@@ -41,14 +54,28 @@ class BonSortieController extends Controller
             $bl_number = 'BL'.'-'.date('Y')."000".$nbRow;
         }elseif ($nbRow >= 10 && $nbRow <= 99){
             $bl_number = 'BL' . '-'.date('Y')."00".$nbRow;
-        }elseif ($nbRow >= 100 ){
-            $bl_number = 'BL' . '-'.date('Y')."0".$nbRow;
+        }elseif ($nbRow >= 100 && $nbRow <= 999){
+            $bl_number = 'BR' . '-'.date('Y')."0".$nbRow;
+        }elseif ($nbRow >= 1000 ){
+            $bl_number = 'BR' . '-'.date('Y').$nbRow;
         }
-        //$bon_number = DB::table('bon_sorties')->latest('bon_number')->first();
+
         $bon_number = $bl_number;
         $articles = Article::all();
         $clients = Client::all();
         return view('bonSorties.creeBon',compact('articles','bon_number' , 'clients'));
+    }
+
+    public function searchClient(Request $request){
+
+        $results = [];
+
+        if($request->has('q')){
+            $search = $request->q;
+            $results = Client::where('full_name', 'LIKE', '%'.$search.'%')
+            		->get();
+        }
+        return response()->json($results);
     }
 
     /**
@@ -78,8 +105,10 @@ class BonSortieController extends Controller
             $bl_number = 'BL'.'-'.date('Y')."000".$nbRow;
         }elseif ($nbRow >= 10 && $nbRow <= 99){
             $bl_number = 'BL' . '-'.date('Y')."00".$nbRow;
-        }elseif ($nbRow >= 100 ){
-            $bl_number = 'BL' . '-'.date('Y')."0".$nbRow;
+        }elseif ($nbRow >= 100 && $nbRow <= 999){
+            $bl_number = 'BR' . '-'.date('Y')."0".$nbRow;
+        }elseif ($nbRow >= 1000 ){
+            $bl_number = 'BR' . '-'.date('Y').$nbRow;
         }
 
 
@@ -89,6 +118,9 @@ class BonSortieController extends Controller
         $data['client_name'] = $request->client_name;
         $data['client_address'] = $request->client_address;
         $data['client_phone'] = $request->client_phone;
+        $data['code_client'] = $request->code_client;
+        $data['paid'] = $request->paid;
+        $data['rest'] = $request->rest;
         $data['total'] = $request->total;
         $data['created_by'] = Auth::user()->name;
 
@@ -103,18 +135,24 @@ class BonSortieController extends Controller
 
             // try{
 
-                //$stock = [];
+                $desc[$i] = Article::whereId($request->descriptionn[$i])->first();
+                // dd($desc[$i]->description);
 
                 $details_list[$i]['article'] = $request->article[$i];
-                $details_list[$i]['description'] = $request->description[$i];
+                $details_list[$i]['bon_date'] = $request->bon_date;
+                $details_list[$i]['description'] = $desc[$i]->description;
                 $details_list[$i]['quantite'] = $request->quantite[$i];
                 $details_list[$i]['total_quantite'] = $request->total_quantite[$i];
                 $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
-                $details_list[$i]['prix_total'] = $request->prix_total[$i];
+                $details_list[$i]['prix_total'] = $request->prix_unitaire[$i] * $request->quantite[$i];
+                
+                $avg[$i] = EntreeDetail::where('description' , $desc[$i]->description)->where('created_at' , '>' , '2021-05-15')->avg('prix_unitaire');
+                $prix_achat[$i] = $details_list[$i]['quantite'] * $avg[$i];
+
+                $details_list[$i]['benifis'] = $request->prix_total[$i] - $prix_achat[$i];
 
             try {
                 $stock= DB::table('articles')->select('stock')->where('reference', $request->article[$i])->value('stock');
-                //dd($stock[$i]);
                 $stock1 = $stock - $request->quantite[$i];
                 DB::table('articles')->where('reference', $request->article[$i])->update(['stock' => $stock1]);
         
@@ -122,19 +160,35 @@ class BonSortieController extends Controller
             catch (\Exception $e){
                     return redirect()->back()->withErrors(['error' => 'المرجو حذف هذه الفاتورة من الجدول و التأكد من المخزن !!']);
             }
-            // }
 
-            // catch (\Exception $e){
-            //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-            // }
         }
+        
 
+        $credit = DB::table('credits')->select('credit')->where('code_client' ,$request->code_client)->value('credit');
+        $clientHasCredit = DB::table('credits')->where('code_client' ,$request->code_client);
+        
+        if(!$clientHasCredit->exists()) {
+
+            Credit::create([
+                'credit' => $request->rest,
+                'code_client' => $request->code_client,
+                'client_name' => $request->client_name,
+            ]);
+            
+        }else{
+            
+            $credit1 = $credit + $request->rest;
+            DB::table('credits')->where('code_client' , $request->code_client)->update(['credit' => $credit1]);
+        
+        }
+        
+        //dd($credit);
         $details = $bonSortie->bons()->createMany($details_list);
         
         $user = User::get();
         $user = User::find(Auth::user()->id);
         $article= Article::where('reference', $request->article)->first();
-
+        //dd($request->article);
         if($stock1 < 10 ){
            Notification::send($user ,new CheckStock($article));
            session()->flash('stock', 'المرجو التأكد من المخزن !!');
@@ -211,16 +265,19 @@ class BonSortieController extends Controller
 
             
             for ($i = 0; $i < count(array($request->article)); $i++) {
+
+                $desc[$i] = Article::whereId($request->descriptionn[$i])->first();
+
                 $details_list[$i]['article'] = $request->article[$i];
-                $details_list[$i]['description'] = $request->description[$i];
+                $details_list[$i]['description'] =  $desc[$i];
                 $details_list[$i]['quantite'] = $request->quantite[$i];
                 $details_list[$i]['total_quantite'] = $request->total_quantite[$i];
                 $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
                 $details_list[$i]['prix_total'] = $request->prix_total[$i];
 
-                $stock = DB::table('articles')->select('stock')->where('reference', $request->article[$i])->value('stock');
+                $stock = DB::table('articles')->select('stock')->where('description', $request->article[$i])->value('stock');
                 $stock1 = $stock - $request->quantite[$i];
-                DB::table('articles')->where('reference', $request->article[$i])->update(['stock' => $stock1]);
+                DB::table('articles')->where('description', $request->article[$i])->update(['stock' => $stock1]);
             }
       
 
@@ -276,10 +333,12 @@ class BonSortieController extends Controller
     }
 
 
-    public function getDescription($reference)
+    public function getDescription($description)
     {
-        $reference = DB::table("articles")->where("reference", $reference)->first();
-        return json_encode($reference);
+        $description = DB::table("articles")->where("description", $description)->first();
+        return json_encode($description);
     }
+
+
 
 }

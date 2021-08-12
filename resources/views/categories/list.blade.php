@@ -38,6 +38,7 @@
 					@endif
                     <div class="col-xl-12">
 						<div class="card">
+							@can('add categorie')
 							<div class="card-header pb-0">
 								<div class="d-flex justify-content-between">
                                     <div class="col-sm-6 col-md-4 col-xl-3">
@@ -45,6 +46,7 @@
                                     </div>
 								</div>
 							</div>
+							@endcan
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table table-striped mg-b-0 text-md-nowrap">
@@ -61,13 +63,14 @@
 													<th scope="row">{{$categorie->id}}</th>
 													<td>{{$categorie->categorie_name}}</td>
 													<td>
-													@can('modifie categorie')
+													@can('edit categorie')
 														<a class="modal-effect btn btn-sm btn-info" data-effect="effect-scale"
-														   data-id="{{ $categorie->id }}" data-categorie_name="{{ $categorie->categorie_name }}"
+														   data-id="{{ $categorie->id }}" 
+														   data-categorie_name="{{ $categorie->categorie_name }}"
 														   data-toggle="modal" href="#exampleModal2"
 														   title="Edit"><i class="las la-pen"></i></a>
 													@endcan
-													@can('supprime categorie')
+													@can('delete categorie')
 														<a class="modal-effect btn btn-sm btn-danger" data-effect="effect-scale"
 														   data-id="{{ $categorie->id }}" data-categorie_name="{{ $categorie->categorie_name }}" data-toggle="modal"
 														   href="#modaldemo9" title="Delete"><i class="las la-trash"></i></a>

@@ -63,10 +63,12 @@ class CommandeNotif extends Notification
 
     public function toDatabase($notifiable)
     {
+        //dd($this->commande[0] ,$this->commande[1]  );
         return [
             'article' => '',
             'stock'   => '',
-           'commande' => $this->commande,
+            'commande' => $this->commande[0],
+            'client_name' => $this->commande[1],
         ];
     }
 }

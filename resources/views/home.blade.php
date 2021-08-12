@@ -149,12 +149,88 @@
 				</div>
 				<!-- row closed -->
 
-				<!-- row opened -->
-					
-				<!-- row closed -->
-			</div>
-		</div>
-		<!-- Container closed -->
+
+				<div class="row">
+
+                    <div class="col md-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3 class="card-title text-info">بحث بالأيام</h3>
+                          </div>
+                        </div>
+                    <hr>
+                        <div class="card-body">
+                            <form action="{{ route('checkReports') }}" method="POST">
+                                @csrf
+                                <label for="">إختر اليوم</label>
+                                <input class="form-control" type="date" name="day" id="" required>
+                                <button class="btn btn-primary mt-3" type="submit">بحث</button>
+                            </form>
+                      </div>
+                    </div>
+                    <div class="col md-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3 class="card-title text-info">بحث بالشهور</h3>
+                          </div>
+                        </div>
+                    <hr>
+                        <div class="card-body">
+                            <form action="{{ route('checkReports') }}" method="POST">
+                                @csrf
+                                <label for="">إختر الشهر</label>
+                                <select name="month" class="form-control">
+                                    <option value="" selected disabled>الشهور</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <label for="">إختر السنة</label>
+                                <select name="year" class="form-control">
+                                    <option value="" selected disabled>السنوات</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                                <button class="btn btn-primary mt-3" type="submit">بحث</button>
+                            </form>
+                      </div>
+                    </div>
+                    <div class="col md-4">
+                        <div class="card">
+                          <div class="card-body">
+                            <h3 class="card-title text-info">بحث بالسنوات</h3>
+                          </div>
+                        </div>
+                    <hr>
+                        <div class="card-body">
+                            <form action="{{ route('checkReports') }}" method="POST">
+                                @csrf
+                                <label for="">إختر السنة</label>
+                                <select name="year" class="form-control">
+                                    <option value="" selected disabled>السنوات</option>
+                                    <option value="2020">2020</option>
+                                    <option value="2021">2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                                <button class="btn btn-primary mt-3" type="submit">بحث</button>
+                            </form>
+                      </div>
+                    </div>
+                   
+				</div>
+					<!-- Container closed -->
 @endsection
 
 @section('js')
@@ -170,6 +246,28 @@
 <script src="{{URL::asset('assets/js/dashboard.sampledata.js')}}"></script>
 <script src="{{URL::asset('assets/js/chart.flot.sampledata.js')}}"></script>
 <!--Internal Apexchart js-->
+
+    {{-- <!-- Internal Data tables -->
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jquery.dataTables.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/jszip.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/pdfmake.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/vfs_fonts.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.print.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
+    <!--Internal  Datatable js -->
+    <script src="{{ URL::asset('assets/js/table-data.js') }}"></script> --}}
+
+
 {{-- <script src="{{URL::asset('assets/js/apexcharts.js')}}"></script> --}}
 <!-- Internal Map -->
 <script src="{{URL::asset('assets/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
@@ -189,6 +287,7 @@
 	window.setTimeout(function () {
 		window.location.reload();
 	}, 180000);
+	
  </script>
 
 @endsection

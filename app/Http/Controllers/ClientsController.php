@@ -8,6 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class ClientsController extends Controller
 {
+
+    // function __construct()
+    // {
+    //     $this->middleware('permission:clients list', ['only' => ['index']]);
+    //     $this->middleware('permission:add client', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:edit client', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:delete client', ['only' => ['destroy']]);
+    //     $this->middleware('permission:add bon', ['only' => ['getClient']]);
+    //     $this->middleware('permission:add commande', ['only' => ['getCredit']]);
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +28,6 @@ class ClientsController extends Controller
     {
         $clients = Client::all();
         return view('clients.list', compact('clients'));
-
     }
 
     /**
@@ -36,34 +46,36 @@ class ClientsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request , Client $client)
+    public function store(Request $request, Client $client)
     {
-            try {
-                $this->validate($request,[
-                    'full_name' => 'required|unique:clients|max:50',
-                    'address' => 'required'
-                ]);
+        // try {
+        $this->validate($request, [
+            'full_name' => 'required|unique:clients|max:50',
+            'address' => 'required'
+        ]);
 
-                $clients = Client::all();
-                $nbRow = count( $clients) + 1;
-                if( $nbRow < 10 ) {
-                    $bl_number = 'CL'.'-'."000".$nbRow;
-                }elseif ($nbRow >= 10 && $nbRow <= 99){
-                    $bl_number = 'CL' .'-'."00".$nbRow;
-                }
-                $client->code_client = $bl_number ;
-                $client->full_name = $request->input('full_name');
-                $client->address = $request->input('address');
-                $client->phone = $request->input('phone');
-                $client->email = $request->input('email');
-                $client->save();
-                session()->flash('success', 'تم الحفظ بنجاح');
-                return redirect('/clients');
-            }
-    
-            catch (\Exception $e){
-                return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-            }
+        $clients = Client::all();
+        $nbRow = count($clients) + 1;
+        if ($nbRow < 10) {
+            $bl_number = 'CL' . '-' . "000" . $nbRow;
+        } elseif ($nbRow >= 10 && $nbRow <= 99) {
+            $bl_number = 'CL' . '-' . "00" . $nbRow;
+        } elseif ($nbRow > 99) {
+            $bl_number = 'CL' . '-' . "0" . $nbRow;
+        }
+        $client->code_client = $bl_number;
+        $client->full_name = $request->input('full_name');
+        $client->address = $request->input('address');
+        $client->phone = $request->input('phone');
+        $client->email = $request->input('email');
+        $client->save();
+        session()->flash('success', 'تم الحفظ بنجاح');
+        return redirect('/clients');
+        // }
+
+        // catch (\Exception $e){
+        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        // }
     }
 
     /**
@@ -97,30 +109,30 @@ class ClientsController extends Controller
      */
     public function update(Request $request)
     {
-        try {
+        //try {
 
-            $id = $request->id;
-            $this->validate($request,[
-                'full_name' => 'required|unique:clients|max:50'.$id,
-                'address' => 'required'
-            ]);
+        $id = $request->id;
+        $this->validate($request, [
+            'full_name' => 'required|unique:clients|max:50' . $id,
+            'address' => 'required'
+        ]);
 
-            $client = Client::find($id);
-            $client->full_name = $request->input('full_name');
-            $client->address = $request->input('address');
-            $client->phone = $request->input('phone');
-            $client->email = $request->input('email');
-            $client->save();
+        $client = Client::find($id);
+        $client->full_name = $request->input('full_name');
+        $client->address = $request->input('address');
+        $client->phone = $request->input('phone');
+        $client->email = $request->input('email');
+        $client->save();
 
-            session()->flash('success','تم التعديل بنجاح');
-            return redirect('/clients');
-        }
+        session()->flash('success', 'تم التعديل بنجاح');
+        return redirect('/clients');
+        //}
 
-        catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
+        // catch (\Exception $e){
+        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        // }
 
-      
+
     }
 
     /**
@@ -142,5 +154,17 @@ class ClientsController extends Controller
     {
         $clients = DB::table("clients")->where("full_name", $name)->first();
         return json_encode($clients);
+    }
+
+    public function searchClient($search)
+    {
+        $results = DB::table("clients")->where("full_name", 'LIKE', '%' . $search . '%')->get();
+        return json_decode($results);
+    }
+
+    public function getCredit($code)
+    {
+        $credit = DB::table("credits")->where("code_client", $code)->first();
+        return json_encode($credit);
     }
 }

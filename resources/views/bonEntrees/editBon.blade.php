@@ -104,11 +104,11 @@
                                             1
                                         </td>
                                         <td style="width: 15%">
-                                            <select id="article" name="article[{{$loop->index}}]" class="form-control article" required>
-                                                <option value="" selected disabled>{{ $item->article}}</option>
+                                            <select id="article" name="description[{{$loop->index}}]" class="form-control description" required>
+                                                <option value="{{$item->description}}" selected>{{ $item->description}}</option>
                                                 @foreach ($articles as $article)
-                                                    <option value="{{ $article->reference }}">
-                                                        {{ $article->reference}}</option>
+                                                    <option value="{{ $article->description }}">
+                                                        {{ $article->description}}</option>
                                                 @endforeach
                                             </select>
                                             @error('article')<span class="help-block text-danger">{{ $message }}</span>@enderror
@@ -116,11 +116,11 @@
                                         </td>
                                         <td style="width:15%">
                                             <input type="hidden" name="description_id" class="description_id"  id="description_id" value="1">
-                                            <input type="text" name="description[]" value="" class="form-control description" id="description1" readonly required/>
+                                            <input type="text" name="article[]" class="form-control article" id="article1" readonly required/>
                                             @error('description')<span class="help-block text-danger">{{ $message }}</span>@enderror
                                         </td>
                                         <td style="width:10%">
-                                            <input type="number" name="unite_mesure" value="" class="form-control unite_mesure" id="unite_mesure1" readonly required/>
+                                            <input type="number" name="unite_mesure"  class="form-control unite_mesure" id="unite_mesure1" readonly required/>
                                         </td> 
                                         <td style="width:15%">
                                             <input type="number" name="quantite[{{$loop->index}}]" value="{{ old('quantite', $item->quantite ) }}" class="form-control quantite" id="quantite" required/>
@@ -133,7 +133,7 @@
                                         </td>
                                         <td style="width:15%">
                                             <input type="number" name="prix_unitaire[{{$loop->index}}]" value="{{ old('prix_unitaire', $item->prix_unitaire ) }}"
-                                                class="form-control prix_unitaire" id="prix_unitaire" required/>
+                                                class="form-control prix_unitaire" step="any" id="prix_unitaire" required/>
                                                 @error('prix_unitaire')<span class="help-block text-danger">{{ $message }}</span>@enderror
 
                                         </td>
@@ -326,7 +326,7 @@
                 '<td style="width:10%"><input type="number" name="unite_mesure" class="form-control unite_mesure" id="unite_mesure'+numberOfRow+'" readonly required/></td>'+
                 '<td style="width:15%"><input type="number" name="quantite[]" class="form-control quantite" id="quantite"/><input type="hidden" name="unite_mesure_id" class="form-control unite_mesure_id" id="unite_mesure_id" value="'+numberOfRow+'" required/></td>' +
                 '<td style="width:15%"><input type="number" value="0"  name="total_quantite[]" class="form-control total_quantite" id="total_quantite" readonly required/>@error("total_quantite")<span class="help-block text-danger">{{ $message }}</span>@enderror</td>'+
-                '<td style="width:15%"><input type="number" name="prix_unitaire[]" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
+                '<td style="width:15%"><input type="number" step="any" name="prix_unitaire[]" class="form-control prix_unitaire" id="prix_unitaire"/></td>' +
                 '<td style="width:15%"><input type="number" name="prix_total[]" class="form-control prix_total" value="0.00" id="prix_total" readonly/></td>' +
                 '<td><a href="#" class="btn btn-danger btn-sm delete"><i class="fa fa-times"></i></a></td>';
             $('.addMoreArticle').append(tr);

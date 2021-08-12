@@ -80,7 +80,7 @@
    
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    @can('ajouter bon')
+                    @can('add commande')
                     <a href="{{route('commande.create')}}" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
                             class="fas fa-plus"></i>&nbsp; إظافة طلب</a>
                     @endcan
@@ -119,25 +119,14 @@
 												<button aria-expanded="false" aria-haspopup="true" class="btn btn-sm btn-primary"
 												data-toggle="dropdown" id="dropdownMenuButton" type="button">قائمة<i class="fas fa-caret-down ml-1"></i></button>
 												<div  class="dropdown-menu tx-md-10">
-                                                    {{-- @can('modifie bon')
-													<a class="dropdown-item text-success btn-sm" 
-                                                        href="{{route('bonEntrees.edit',$bonEntree->id)}}">تعديل</a>
-                                                    @endcan --}}
-                                                    @can('supprime bon')
-                                                    <a class="dropdown-item text-info btn-sm"
-                                                        data-bon_id="{{$bonCommande->id}}"
-                                                        data-toggle="modal"
-                                                        data-target="#archive_bon"
-                                                        href="#">أرشفة</a>
-                                                    @endcan
-                                                    @can('archive bon')
+                                                    @can('delete commande')
                                                     <a class="dropdown-item text-danger btn-sm"
-                                                        data-bon_id="{{ $bonCommande->id }}"
+                                                        data-bon_id="{{$bonCommande->id}}"
                                                         data-toggle="modal"
                                                         data-target="#delete_bon"
                                                         href="#">حذف</a>
                                                     @endcan
-                                                    @can('print bon')
+                                                    @can('print commande')
                                                     <a class="dropdown-item text-primary btn-sm" 
                                                         href="{{route('print',$bonCommande->id)}}">طباعة</a>
                                                     @endcan
@@ -186,7 +175,7 @@
 </div>
 <!-- End Deleteing Model -->
 <!-- Archiving Model-->
-<div class="modal fade" id="archive_bon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="delete_bon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

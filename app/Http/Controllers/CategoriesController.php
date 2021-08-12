@@ -11,7 +11,7 @@ class CategoriesController extends Controller
 
     // function __construct()
     // {
-    //     //$this->middleware('permission:view role', ['only' => ['index', 'store']]);
+    //     $this->middleware('permission:categories', ['only' => ['index']]);
     //     $this->middleware('permission:add categorie', ['only' => ['create', 'store']]);
     //     $this->middleware('permission:edit categorie', ['only' => ['edit', 'update']]);
     //     $this->middleware('permission:delete categorie', ['only' => ['destroy']]);

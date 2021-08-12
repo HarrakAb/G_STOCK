@@ -79,7 +79,7 @@
             @endif
             <div class="card mg-b-20">
                 <div class="card-header pb-0">
-                    @can('ajouter bon')
+                    @can('add bon')
                     <a href="{{route('bonSorties.create')}}" class="modal-effect btn btn-sm btn-primary" style="color:white"><i
                             class="fas fa-plus"></i>&nbsp; إظافة فاتورة</a>
                     @endcan
@@ -94,7 +94,6 @@
                         <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center">
                             <thead>
                                 <tr>
-                                    <th class="border-bottom-0">#</th>
                                     <th class="border-bottom-0">رقم الفاتورة</th>
                                     <th class="border-bottom-0">تاريخ الفاتورة</th>
                                     <th class="border-bottom-0">إسم الزبون</th>
@@ -108,15 +107,8 @@
                             @if (empty($bonSorties))
                                 <th class="border-bottom-0 text-bold"> لا توجد فاتير !!</th>
                             @else
-                                @php
-                                $i = 0 ;
-                                @endphp
                                 @foreach ($bonSorties as $bonSortie)
-                                    @php
-                                    $i++;
-                                    @endphp
                                     <tr class="text-center">
-                                        <td>{{ $bonSortie->i }}</td>
                                         <td>{{$bonSortie->bon_number}}</td>
                                         <td>{{$bonSortie->bon_date}}</td>
                                         <td>{{$bonSortie->client_name}}</td>
@@ -130,11 +122,7 @@
 												<button aria-expanded="false" aria-haspopup="true" class="btn btn-sm btn-primary"
 												data-toggle="dropdown" id="dropdownMenuButton" type="button">قائمة<i class="fas fa-caret-down ml-1"></i></button>
 												<div  class="dropdown-menu tx-md-10">
-                                                    {{-- @can('modifie bon')
-													<a class="dropdown-item text-success btn-sm" 
-                                                        href="{{route('bonSorties.edit',$bonSortie->id)}}">تعديل</a>
-                                                    @endcan --}}
-                                                    @can('supprime bon')
+                                                    @can('delete bon')
                                                     <a class="dropdown-item text-info btn-sm"
                                                         data-bon_id="{{$bonSortie->id}}"
                                                         data-toggle="modal"

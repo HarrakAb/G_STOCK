@@ -18,30 +18,44 @@ class PermissionTableSeeder extends Seeder
             'bons menu',
             'bon entree',
             'bon sortie',
-           // 'invoices not payed',
-            //'invoices payed partial',
-            //'archived invoices',
-            //'rapports menu',
-            //'invoices rapports',
-            //'employers rapports',
+            
+            'stock value',
+            'stock etat',
+
+            'credit',
+            'edit credit',
+            'suivi credit',
+            
+            'clients',
+            'clients list',
+            'add client',
+            'edit client',
+            'delete client',
+
+            'fournisseurs',
+            'fournisseurs list',
+            'add fournisseur',
+            'edit fournisseur',
+            'delete fournisseur',
+
+            'commande',
+            'add commande',
+            'archive commande',
+            'voir commande',
+            'delete commande',
+            'print commande',
+
             'employes',
             'list des employes',
             'permissions des employes',
-            'produits',
-            'articles',
-            'categories',
-         
-    
-            'ajouter bon',
-            'supprime bon',
+            
+            'add bon',
+            'delete bon',
             'export EXCEL',
-            'payment edit',
-            'modifie bon',
+            'edit bon',
             'archive bon',
             'print bon',
-            //'add attachment',
-            //'delete attachment',
-    
+
             'add user',
             'edit user',
             'delete user',
@@ -51,13 +65,15 @@ class PermissionTableSeeder extends Seeder
             'edit role',
             'delete role',
     
-            'ajouter article',
-            'modifie article',
-            'supprime article',
+            'articles',
+            'add article',
+            'edit article',
+            'delete article',
     
-            'ajouter categorie',
-            'modifie categorie',
-            'supprime categorie',
+            'categories',
+            'add categorie',
+            'edit categorie',
+            'delete categorie',
         ];
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);

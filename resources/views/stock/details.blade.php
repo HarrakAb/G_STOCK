@@ -65,7 +65,6 @@
 									<table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center">                                     
                                         <thead>
 											<tr>
-												<th>#</th>
 												<th>المنتوج</th>
 												<th>الوصف</th>
                                                 <th>القسم</th>
@@ -75,7 +74,6 @@
 										<tbody >	
                                             @foreach ($articles as $article)                                           
                                                 <tr class="bor">
-                                                    <td class="bor">{{$article->id}}</td>
                                                     <td class="bor">{{$article->reference}}</td>
                                                     <td class="bor">{{$article->description}}</td>
                                                     <td class="bor">{{$article->categorie->categorie_name}}</td>
