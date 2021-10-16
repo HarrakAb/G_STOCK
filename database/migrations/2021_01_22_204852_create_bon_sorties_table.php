@@ -15,7 +15,7 @@ class CreateBonSortiesTable extends Migration
     {
         Schema::create('bon_sorties', function (Blueprint $table) {
             $table->id('id');
-            $table->string('bon_number', 50);
+            $table->string('bon_number', 50)->nullable();
             $table->date('bon_date')->nullable();
             $table->string('client_name' , 50);
             $table->string('client_address' , 50);

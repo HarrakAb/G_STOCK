@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Arivage;
 use App\Models\Article;
 use App\Models\BonEntree;
 use App\Models\Categorie;
@@ -67,7 +68,7 @@ class BonEntreeController extends Controller
     public function store(Request $request)
     {
 
-        try {
+        // try {
 
             $this->validate($request,[
                 'bon_number' => 'required|unique:bon_entrees|max:15',
@@ -79,18 +80,8 @@ class BonEntreeController extends Controller
             ]);
 
             $bons = BonEntree::all();
-            $nbRow = count( $bons) + 1;
-            if( $nbRow < 10 ) {
-                $bl_number = 'BR'.'-'.date('Y')."000".$nbRow;
-            }elseif ($nbRow >= 10 && $nbRow <= 99){
-                $bl_number = 'BR' . '-'.date('Y')."00".$nbRow;
-            }elseif ($nbRow >= 100 && $nbRow <= 999){
-                $bl_number = 'BR' . '-'.date('Y')."0".$nbRow;
-            }elseif ($nbRow >= 1000 ){
-                $bl_number = 'BR' . '-'.date('Y').$nbRow;
-            }
+            $nbRow = count( $bons);
 
-            $data['bon_number'] = $bl_number;
             $data['bon_date'] = $request->bon_date;
             $data['client_name'] = $request->client_name;
             $data['total'] = $request->total;
@@ -99,7 +90,35 @@ class BonEntreeController extends Controller
 
             $bonEntree = BonEntree::create($data);
 
+            $lastBon =  DB::table('bon_entrees')->latest('id')->first();
+            
+            $lastBon = $lastBon->id;
+
+            if( $nbRow < 10 ) {
+                $bl_number = 'BR'.'-'.date('Y')."000".$lastBon;
+            }elseif ($nbRow >= 10 && $nbRow <= 99){
+                $bl_number = 'BR' . '-'.date('Y')."00".$lastBon;
+            }elseif ($nbRow >= 100 && $nbRow <= 999){
+                $bl_number = 'BR' . '-'.date('Y')."0".$lastBon;
+            }elseif ($nbRow >= 1000 ){
+                $bl_number = 'BR' . '-'.date('Y').$lastBon;
+            }
+
+            DB::table('bon_entrees')->where('id', $lastBon)->update(['bon_number' => $bl_number]);
+            $arivage_list = [];
             $details_list = [];
+
+            // for arivage
+            for ($i = 0; $i < count($request->article); $i++) {
+
+                $arivage_list[$i]['article'] = $request->article[$i];
+                $arivage_list[$i]['quantite'] = $request->quantite[$i];
+                $arivage_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
+                
+            }
+            $bonEntree->arivage()->createMany($arivage_list);
+
+            // for article
             for ($i = 0; $i < count($request->article); $i++) {
 
                 $desc[$i] = Article::whereId($request->descriptionn[$i])->first();
@@ -111,29 +130,27 @@ class BonEntreeController extends Controller
                 $details_list[$i]['prix_unitaire'] = $request->prix_unitaire[$i];
                 $details_list[$i]['prix_total'] = $request->prix_total[$i];
 
-
                 $stock = DB::table('articles')->select('stock')->where('reference', $request->article[$i])->value('stock');
                 $stock1 = $stock + $request->quantite[$i];
                 DB::table('articles')->where('reference', $request->article[$i])->update(['stock' => $stock1]);
+             
+                $sum_prix_unitaire = DB::table('arivages')->where('article', $request->article[$i])->sum('prix_unitaire');
+                $count = DB::table('arivages')->where('article', $request->article[$i])->count();
+                $avg = $sum_prix_unitaire / $count ;
 
+                DB::table('articles')->where('reference', $request->article[$i])->update(['avg' => $avg]);
             }
 
-            $bonEntree->bons()->createMany($details_list);
-
-            // $stock = DB::table('articles')->select('stock')->where('reference', $request->article)->value('stock');
-            // $stock += array_sum($request->quantite);
-            // DB::table('articles')->where('reference', $request->article)->update(['stock' => $stock]);
-
-            
+            $bonEntree->bons()->createMany($details_list);          
             session()->flash('Add', 'تم الحفظ بنجاح');
             //return back();
             return redirect()->route('bonEntrees.index');
 
-        }
+        // }
 
-        catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
-        }
+        // catch (\Exception $e){
+        //     return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        // }
 
     }
 

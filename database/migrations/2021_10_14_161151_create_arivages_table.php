@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSortieDetailsTable extends Migration
+class CreateArivagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,12 @@ class CreateSortieDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sortie_details', function (Blueprint $table) {
+        Schema::create('arivages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bon_sorties_id')->constrained('bon_sorties')->onDelete('cascade');
+            $table->foreignId('bon_entrees_id')->constrained('bon_entrees')->onDelete('cascade');
             $table->string('article');
-            $table->string('description');
-            $table->date('bon_date');
             $table->bigInteger('quantite');
-            $table->bigInteger('total_quantite');
             $table->double('prix_unitaire' , 12,2);
-            $table->double('prix_total' , 12,2);
             $table->timestamps();
         });
     }
@@ -34,6 +30,6 @@ class CreateSortieDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sortie_details');
+        Schema::dropIfExists('arivages');
     }
 }

@@ -100,32 +100,36 @@ class BonSortieController extends Controller
         
 
         $bons = BonSortie::all();
-        $nbRow = count( $bons) + 1;
-        if( $nbRow < 10 ) {
-            $bl_number = 'BL'.'-'.date('Y')."000".$nbRow;
-        }elseif ($nbRow >= 10 && $nbRow <= 99){
-            $bl_number = 'BL' . '-'.date('Y')."00".$nbRow;
-        }elseif ($nbRow >= 100 && $nbRow <= 999){
-            $bl_number = 'BR' . '-'.date('Y')."0".$nbRow;
-        }elseif ($nbRow >= 1000 ){
-            $bl_number = 'BR' . '-'.date('Y').$nbRow;
-        }
+        $nbRow = count( $bons);
 
-
-        $data['bon_number'] = $bl_number;
-        //$data['bon_number'] = $request->bon_number;
         $data['bon_date'] = $request->bon_date;
         $data['client_name'] = $request->client_name;
         $data['client_address'] = $request->client_address;
         $data['client_phone'] = $request->client_phone;
         $data['code_client'] = $request->code_client;
-        $data['paid'] = $request->paid;
+        $data['paid'] = ($request->paid == null) ? 0 : $request->paid;
         $data['rest'] = $request->rest;
         $data['total'] = $request->total;
         $data['created_by'] = Auth::user()->name;
 
 
         $bonSortie = BonSortie::create($data);
+
+        $lastBon =  DB::table('bon_sorties')->latest('id')->first();
+            
+        $lastBon = $lastBon->id;
+
+        if( $nbRow < 10 ) {
+            $bl_number = 'BR'.'-'.date('Y')."000".$lastBon;
+        }elseif ($nbRow >= 10 && $nbRow <= 99){
+            $bl_number = 'BR' . '-'.date('Y')."00".$lastBon;
+        }elseif ($nbRow >= 100 && $nbRow <= 999){
+            $bl_number = 'BR' . '-'.date('Y')."0".$lastBon;
+        }elseif ($nbRow >= 1000 ){
+            $bl_number = 'BR' . '-'.date('Y').$lastBon;
+        }
+
+        DB::table('bon_sorties')->where('id', $lastBon)->update(['bon_number' => $bl_number]);
 
         $details_list = [];
 

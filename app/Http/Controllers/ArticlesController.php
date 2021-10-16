@@ -186,7 +186,8 @@ class ArticlesController extends Controller
     public function getStockValue(){
 
         $articles = Article::where('stock' ,'>', 1)->get();
-        return view('stock.value',compact('articles'));
+        $sum = Article::sum('avg');
+        return view('stock.value',compact('articles' , 'sum'));
     }
 
     public function getAvg($article) {

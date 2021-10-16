@@ -20,4 +20,9 @@ class BonEntree extends Model
     public function bons(){
         return $this->hasMany(EntreeDetail::class,'bon_entrees_id' , 'id');
     }
+
+    public function arivage(){
+        return $this->hasMany(Arivage::class,'bon_entrees_id' , 'id');
+    }
+
 }

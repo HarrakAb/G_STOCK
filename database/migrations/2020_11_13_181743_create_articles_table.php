@@ -17,6 +17,7 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('reference');
             $table->integer('unite_mesure');
+            $table->double('avg' , 12,2)->nullable();
             $table->text('description');
             $table->unsignedBigInteger('categorie_id');
             $table->foreign('categorie_id')

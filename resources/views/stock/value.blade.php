@@ -65,6 +65,16 @@
 								</div>
 							</div>
 							<div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4 col-xl-3">
+                                        <h4 class="text-primary"> القيمة الإجمالية للمحزن :</h4>
+									</div>
+                                    <div class="col-sm-6 col-md-4 col-xl-3">
+                                        <h4 class="text-success" id="sum">
+
+                                        </h4>
+									</div>
+                                </div>
 								<div id="print" class="table-responsive">
 									 <table id="example1" class="table key-buttons text-md-nowrap" data-page-length='10'style="text-align: center">
 
@@ -84,8 +94,8 @@
                                                     <td class="bor">{{$article->description}}</td>
                                                     <td class="bor">{{$article->categorie->categorie_name}}</td>
                                                     <td id="stock" class="bor stock">{{$article->stock}}</td>
-                                                    <td id="value" class="bor value">
-                                                        {{-- <input class="inpt value" id="value" name="value" type="text"> --}}
+                                                    <td id="value" class="value">
+                                                        {{ number_format($article->stock * $article->avg , 2  ,',' , '.') }}
                                                     </td>
                                                 </tr>
                                             @endforeach																		
@@ -143,33 +153,50 @@
         location.reload();
     }
     ///////
+ 
+    $(function() {
+        
+        var TotalValue = 0;
 
-    $('.table tr').each(function(){
-        $(this).each(function(){
+        $("tr #value").each(function(index,value){
+            currentRow = parseFloat($(this).text());
+            TotalValue += currentRow
+        });
+        
+        $("#sum").text(TotalValue+' درهم ');
+        console.log(TotalValue);
 
-            var article = $(this).find('#article').html();
-            var stock = $(this).find('#stock').html();
-            var value = $(this).find('#value');
-            var url = "{{ URL::to('getAvg') }}/" + article;
+    });
 
-            $.ajax({
-                url: url,
-                type: 'get',
-                dataType: 'json',
-                success: function(response){
-                    if(response != null){
-                        // $('#table tr').each(function(){
+    /////////
 
-                            value.html((response * stock).toFixed(2) + '&nbsp;' +'  درهم  ')
-                            //console.log((response * stock).toFixed(2));
-                        // })
-                        //console.log(article + '=>' +stock + '=>' + response);
-                    }
-                }
-            });
+
+    // $('.table tr').each(function(){
+    //     $(this).each(function(){
+
+    //         var article = $(this).find('#article').html();
+    //         var stock = $(this).find('#stock').html();
+    //         var value = $(this).find('#value');
+    //         var url = "{{ URL::to('getAvg') }}/" + article;
+
+    //         $.ajax({
+    //             url: url,
+    //             type: 'get',
+    //             dataType: 'json',
+    //             success: function(response){
+    //                 if(response != null){
+    //                     // $('#table tr').each(function(){
+
+    //                         value.html((response * stock).toFixed(2) + '&nbsp;' +'  درهم  ')
+    //                         //console.log((response * stock).toFixed(2));
+    //                     // })
+    //                     //console.log(article + '=>' +stock + '=>' + response);
+    //                 }
+    //             }
+    //         });
             
-        })
-    })
+    //     })
+    // })
 
 </script>
 

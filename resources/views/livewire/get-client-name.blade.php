@@ -1,5 +1,5 @@
 
-    <div class="form-group row ">
+    <div class="form-group row">
         <div class="col-md col-sm ">
                 <select id="client_name" name="client_name" class="form-control form-control-lg client_name" required>
                     <option></option>
